@@ -12,6 +12,8 @@ const OPTIONAL = ["locationInfo", "technicalAndInteraction"];
 export const BUILDS = [
   ["templates/wxt", "chrome", ".output/chrome-mv3"],
   ["templates/wxt", "firefox", ".output/firefox-mv3"],
+  ["examples/wxt-direct", "chrome", ".output/chrome-mv3"],
+  ["examples/wxt-direct", "firefox", ".output/firefox-mv3"],
 ];
 
 export async function checkBuild(browser, dir) {

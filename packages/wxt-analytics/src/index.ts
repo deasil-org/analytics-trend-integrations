@@ -64,13 +64,39 @@ export const analyticsTrend = defineAnalyticsProvider<AnalyticsTrendOptions>((_a
     getValue: async () => (await api.storage.local.get(DEFAULT_ENABLED_KEY))[DEFAULT_ENABLED_KEY] === true,
   };
 
+  async function switchedOn(): Promise<boolean> {
+    try {
+      return (await enabled.getValue()) === true;
+    } catch {
+      return false;
+    }
+  }
+
+  const manifest = api.runtime.getManifest?.() as { version?: string; version_name?: string } | undefined;
+
   const client = initBackground({
     writeKey: options.writeKey,
     endpoint: options.endpoint,
+    appVersion: config.version ?? manifest?.version_name ?? manifest?.version,
     uninstallTracking: options.uninstallTracking,
     respectGlobalPrivacyControl: options.respectGlobalPrivacyControl,
     clearDataOnGlobalPrivacyControl: options.clearDataOnGlobalPrivacyControl,
-    consent: async () => (await enabled.getValue()) === true,
+    consent: switchedOn,
+    // Only in the developer's own console, only when they asked for WXT's
+    // debug output, and only the error, never the event.
+    onError: config.debug ? (error) => console.debug("[@analyticstrend/wxt-analytics]", error) : undefined,
+  });
+
+  // setEnabled writes to storage, so a flip shows up here. The SDK's queue
+  // writes land here too, so only a change in the switch's value is passed on.
+  let last = switchedOn();
+  const storageEvents = api.storage as { onChanged?: { addListener(listener: () => void): void } };
+  storageEvents.onChanged?.addListener(() => {
+    const previous = last;
+    last = switchedOn();
+    void Promise.all([previous, last]).then(([before, now]) => {
+      if (before !== now) client.consentChanged();
+    });
   });
 
   return {

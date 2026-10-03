@@ -2,7 +2,8 @@
 
 Framework integrations, a starter template and working examples for
 [AnalyticsTrend](https://analyticstrend.com), product analytics for browser extensions and
-websites that collects no cookies, no fingerprints and no IP addresses.
+websites with no cookies and no fingerprinting, which keeps no IP addresses: each one is
+used to work out a country or region, then discarded.
 
 | Path | What it is |
 | --- | --- |

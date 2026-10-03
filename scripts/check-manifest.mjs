@@ -14,6 +14,8 @@ export const BUILDS = [
   ["templates/wxt", "firefox", ".output/firefox-mv3"],
   ["examples/wxt-direct", "chrome", ".output/chrome-mv3"],
   ["examples/wxt-direct", "firefox", ".output/firefox-mv3"],
+  ["examples/plain", "chrome", "dist"],
+  ["examples/plain", "firefox", "dist"],
 ];
 
 export async function checkBuild(browser, dir) {

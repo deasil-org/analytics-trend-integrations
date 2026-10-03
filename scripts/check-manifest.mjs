@@ -9,7 +9,10 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const OPTIONAL = ["locationInfo", "technicalAndInteraction"];
 
 // Every project's builds, checked by `pnpm check`. Each project adds its own.
-export const BUILDS = [];
+export const BUILDS = [
+  ["templates/wxt", "chrome", ".output/chrome-mv3"],
+  ["templates/wxt", "firefox", ".output/firefox-mv3"],
+];
 
 export async function checkBuild(browser, dir) {
   const problems = [];

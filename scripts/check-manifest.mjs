@@ -18,6 +18,8 @@ export const BUILDS = [
   ["examples/plain", "firefox", "dist"],
   ["examples/crxjs", "chrome", "dist/chrome"],
   ["examples/crxjs", "firefox", "dist/firefox"],
+  ["examples/plasmo", "chrome", "build/chrome-mv3-prod"],
+  ["examples/plasmo", "firefox", "build/firefox-mv3-prod"],
 ];
 
 export async function checkBuild(browser, dir) {

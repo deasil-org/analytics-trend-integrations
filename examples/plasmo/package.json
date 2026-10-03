@@ -1,0 +1,38 @@
+{
+  "name": "example-plasmo",
+  "displayName": "AnalyticsTrend with Plasmo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Plasmo extension instrumented with the AnalyticsTrend extension SDK.",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build && plasmo build --target=firefox-mv3",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@analyticstrend/extension": "^0.5.0",
+    "plasmo": "0.90.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.9.3"
+  },
+  "manifest": {
+    "permissions": ["storage"],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "plasmo-example@analyticstrend.com",
+        "strict_min_version": "140.0",
+        "data_collection_permissions": {
+          "required": ["none"],
+          "optional": ["technicalAndInteraction", "locationInfo"]
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,12 @@ allowBuilds:
   # A web-ext dependency whose install script only polyfills child_process for
   # Node versions older than this repository supports.
   spawn-sync: false
+  # Install scripts Plasmo's bundler needs.
+  "@parcel/watcher": true
+  "@swc/core": true
+  lmdb: true
+  msgpackr-extract: true
+  sharp: true
 
 # Our own packages, published by us, need not wait out pnpm's minimum release
 # age before this repository can use them.

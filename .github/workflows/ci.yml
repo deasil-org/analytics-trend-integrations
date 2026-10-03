@@ -32,6 +32,10 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          # This job installs with npm, as someone copying the template would.
+          # Without this, setup-node reads the repository's packageManager
+          # field and looks for a pnpm that is not installed here.
+          package-manager-cache: false
       - run: cp -r templates/wxt "$RUNNER_TEMP/starter"
       - run: npm install --no-audit --no-fund
         working-directory: ${{ runner.temp }}/starter

@@ -1,0 +1,21 @@
+packages:
+  - packages/*
+  - templates/*
+  - examples/*
+
+# The template names the provider's published version, so a copy of it installs
+# from npm on its own. Inside this repository that range is met by the provider
+# in the same commit, and this links it, so CI tests the two together.
+linkWorkspacePackages: true
+
+# pnpm blocks dependency install scripts until they are approved.
+allowBuilds:
+  esbuild: true
+  # A web-ext dependency whose install script only polyfills child_process for
+  # Node versions older than this repository supports.
+  spawn-sync: false
+
+# Our own packages, published by us, need not wait out pnpm's minimum release
+# age before this repository can use them.
+minimumReleaseAgeExclude:
+  - "@analyticstrend/*"

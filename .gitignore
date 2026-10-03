@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.output/
+.wxt/
+.plasmo/
+build/
+*.zip
+.env
+.env.*
+!.env.example

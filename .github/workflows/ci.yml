@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      # Builds before the typecheck: Plasmo writes its type declarations
+      # during the build.
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm check
+
+  # The template as someone copying it gets it: outside this repository,
+  # installed from npm alone. Catches anything that only works in here.
+  template-from-npm:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: cp -r templates/wxt "$RUNNER_TEMP/starter"
+      - run: npm install --no-audit --no-fund
+        working-directory: ${{ runner.temp }}/starter
+      - run: npm run build
+        working-directory: ${{ runner.temp }}/starter
+      - run: node scripts/check-manifest.mjs chrome "$RUNNER_TEMP/starter/.output/chrome-mv3" firefox "$RUNNER_TEMP/starter/.output/firefox-mv3"

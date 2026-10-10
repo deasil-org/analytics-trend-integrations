@@ -5,9 +5,10 @@
   "packageManager": "pnpm@11.25.0",
   "engines": { "node": ">=24" },
   "scripts": {
-    "test": "node --test \"scripts/*.test.mjs\" && pnpm -r --if-present test",
+    "test": "pnpm build:packages && node --test \"scripts/*.test.mjs\" && pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "build": "pnpm -r --if-present build",
+    "build:packages": "pnpm -r --filter \"./packages/*\" build",
     "check": "node scripts/check-manifest.mjs"
   }
 }

@@ -1,0 +1,42 @@
+{
+  "name": "@analyticstrend/event-schema",
+  "version": "0.4.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "node ../../scripts/require-pnpm-publish.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.0",
+    "vitest": "^5.0.0"
+  },
+  "description": "Wire contract and validation shared by the AnalyticsTrend collector and SDKs. Dependency-free by design.",
+  "license": "MIT",
+  "homepage": "https://analyticstrend.com",
+  "bugs": "https://github.com/deasil-org/analytics-trend-integrations/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deasil-org/analytics-trend-integrations.git",
+    "directory": "packages/event-schema"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

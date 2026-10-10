@@ -1,12 +1,16 @@
 # AnalyticsTrend integrations
 
-Framework integrations, a starter template and working examples for
+The SDKs, framework integrations, a starter template and working examples for
 [AnalyticsTrend](https://analyticstrend.com), product analytics for browser extensions and
 websites with no cookies and no fingerprinting, which keeps no IP addresses: each one is
 used to work out a country or region, then discarded.
 
 | Path | What it is |
 | --- | --- |
+| [`packages/extension`](packages/extension) | `@analyticstrend/extension`, the SDK for Chromium and Firefox extensions |
+| [`packages/web`](packages/web) | `@analyticstrend/web`, the SDK for websites, and its script tag |
+| [`packages/sdk-core`](packages/sdk-core) | `@analyticstrend/sdk-core`, the queue, batching and retry both SDKs share |
+| [`packages/event-schema`](packages/event-schema) | `@analyticstrend/event-schema`, the wire contract between the SDKs and the collector |
 | [`packages/wxt-analytics`](packages/wxt-analytics) | `@analyticstrend/wxt-analytics`, a provider for WXT's analytics module |
 | [`templates/wxt`](templates/wxt) | A WXT starter extension, already measured |
 | [`examples/wxt-direct`](examples/wxt-direct) | WXT calling the SDK directly |

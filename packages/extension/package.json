@@ -1,0 +1,46 @@
+{
+  "name": "@analyticstrend/extension",
+  "version": "0.5.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "node ../../scripts/require-pnpm-publish.mjs"
+  },
+  "dependencies": {
+    "@analyticstrend/event-schema": "workspace:*",
+    "@analyticstrend/sdk-core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.0",
+    "vitest": "^5.0.0"
+  },
+  "description": "AnalyticsTrend SDK for Chromium and Firefox extensions. Manifest V3 safe: no remote code.",
+  "license": "MIT",
+  "homepage": "https://analyticstrend.com",
+  "bugs": "https://github.com/deasil-org/analytics-trend-integrations/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deasil-org/analytics-trend-integrations.git",
+    "directory": "packages/extension"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

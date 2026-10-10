@@ -8,7 +8,8 @@
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "firefox": "node scripts/build.mjs && web-ext run --source-dir dist --target firefox-desktop",
-    "lint:firefox": "node scripts/build.mjs && web-ext lint --source-dir dist"
+    "lint:firefox": "node scripts/build.mjs && web-ext lint --source-dir dist",
+    "check:browsers": "node scripts/browser-check.mjs"
   },
   "dependencies": { "@analyticstrend/extension": "^0.5.0" },
   "devDependencies": { "esbuild": "^0.28.2", "typescript": "^5.9.3", "web-ext": "^10.7.0" }

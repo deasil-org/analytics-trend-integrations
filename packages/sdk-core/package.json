@@ -1,0 +1,45 @@
+{
+  "name": "@analyticstrend/sdk-core",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "node ../../scripts/require-pnpm-publish.mjs"
+  },
+  "dependencies": {
+    "@analyticstrend/event-schema": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.0",
+    "vitest": "^5.0.0"
+  },
+  "description": "Queue, batching and retry shared by the AnalyticsTrend browser SDKs. Platform-agnostic.",
+  "license": "MIT",
+  "homepage": "https://analyticstrend.com",
+  "bugs": "https://github.com/deasil-org/analytics-trend-integrations/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deasil-org/analytics-trend-integrations.git",
+    "directory": "packages/sdk-core"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

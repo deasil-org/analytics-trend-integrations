@@ -39,6 +39,26 @@ pnpm --filter example-plain firefox
 That builds and opens Firefox with the extension installed as a temporary add-on. Or open
 `about:debugging#/runtime/this-firefox` and choose *Load Temporary Add-on*.
 
+## Check it in real browsers
+
+```bash
+pnpm --filter example-plain check:browsers
+```
+
+This loads the build into real Chromium and real Firefox, points it at a local stub
+collector, and checks from the receiving end that:
+
+- the background starts and delivers within seconds;
+- every page load delivers its `page_visited`, none lost;
+- each arrives within 15 seconds, including after the background has gone idle and been
+  suspended, which is the case unit tests cannot reproduce;
+- one anonymous id and the right write key are on every batch.
+
+It takes about two minutes per browser, because it has to wait out the background's idle
+timeout twice. It needs Firefox installed and the Chromium that Playwright downloads
+(`npx playwright install chromium`); `CHROMIUM_PATH` and `FIREFOX_PATH` override both.
+Branded Google Chrome cannot be used, because it ignores `--load-extension` from version 137.
+
 ## What the manifest is doing
 
 - **Both background keys.** Chrome reads `background.service_worker` and Firefox reads

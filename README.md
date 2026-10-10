@@ -28,6 +28,19 @@ Every project here builds for Chrome and Firefox in CI, and each build is checke
 storage permission, the right background for each browser, Firefox's data-collection block,
 and no remote code.
 
+## Releasing
+
+Raise the version in the package's `package.json` and add a line to its `CHANGELOG.md`,
+then, from the repository root:
+
+```bash
+pnpm test && pnpm release
+```
+
+`pnpm release` publishes every package under `packages/` whose version is not on npm yet, in
+dependency order, and skips the rest. Publish with pnpm only: it replaces the `workspace:*`
+links between the SDKs with real versions, and npm would publish them as they are.
+
 Documentation: <https://analyticstrend.com/docs>. Issues and questions:
 [GitHub issues](https://github.com/deasil-org/analytics-trend-integrations/issues).
 

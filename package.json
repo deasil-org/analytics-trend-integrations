@@ -9,6 +9,7 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "build": "pnpm -r --if-present build",
     "build:packages": "pnpm -r --filter \"./packages/*\" build",
-    "check": "node scripts/check-manifest.mjs"
+    "check": "node scripts/check-manifest.mjs",
+    "release": "pnpm -r --filter \"./packages/*\" publish --access public"
   }
 }

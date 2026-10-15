@@ -1,0 +1,8 @@
+{
+  "name": "example-app-node",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node main.mjs"
+  }
+}

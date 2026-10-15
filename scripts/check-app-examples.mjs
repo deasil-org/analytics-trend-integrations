@@ -39,7 +39,9 @@ function run(example, endpoint) {
     ? [
         "docker",
         [
-          "run", "--rm", "-v", `${dir}:/app`, "-w", "/app",
+          // host.docker.internal is built into Docker Desktop; on Linux this
+          // flag adds it, and Docker Desktop ignores it.
+          "run", "--rm", "--add-host=host.docker.internal:host-gateway", "-v", `${dir}:/app`, "-w", "/app",
           ...Object.entries(env).flatMap(([name, value]) => ["-e", `${name}=${value.replace("localhost", "host.docker.internal")}`]),
           example.image, ...example.command,
         ],

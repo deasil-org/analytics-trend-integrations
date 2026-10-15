@@ -22,6 +22,22 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm check
 
+  # The app examples that run fast on a runner, each against the mock
+  # collector, twice: Node and Rust natively, Python in its image. Swift, Kotlin,
+  # .NET and the Tauri app are checked locally with pnpm check:app-examples.
+  app-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:packages
+      - run: node scripts/check-app-examples.mjs --only node,python,rust
+
   # The template as someone copying it gets it: outside this repository,
   # installed from npm alone. Catches anything that only works in here.
   template-from-npm:

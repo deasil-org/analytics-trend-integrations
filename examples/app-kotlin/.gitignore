@@ -1,0 +1,4 @@
+.analyticstrend-id
+build/
+.gradle/
+.kotlin/

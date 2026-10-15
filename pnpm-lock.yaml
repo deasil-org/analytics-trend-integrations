@@ -8,6 +8,8 @@ importers:
 
   .: {}
 
+  examples/app-node: {}
+
   examples/crxjs:
     dependencies:
       '@analyticstrend/extension':

@@ -60,6 +60,27 @@ const RESERVED = new Set<string>(RESERVED_PROPS);
 
 export type ClientKind = "extension" | "web" | "app";
 
+// What an app may say it runs on (client "app"), since a native app's
+// User-Agent names no browser or system the collector can read. The same
+// families the collector works out from a browser's, and nothing finer: never
+// a version or a model.
+export const APP_OS = ["iOS", "Android", "macOS", "Windows", "Linux", "ChromeOS"] as const;
+export type AppOs = (typeof APP_OS)[number];
+export const DEVICE_TYPES = ["mobile", "tablet", "desktop"] as const;
+export type DeviceType = (typeof DEVICE_TYPES)[number];
+
+const isOneOf = <T extends string>(value: unknown, list: readonly T[]): value is T =>
+  typeof value === "string" && (list as readonly string[]).includes(value);
+
+// Kept only when on the list; anything else is dropped rather than refused,
+// so a batch is never lost over a value the collector would not keep anyway.
+function declaredDevice(input: Record<string, unknown>): { os?: AppOs; deviceType?: DeviceType } {
+  return {
+    ...(isOneOf(input.os, APP_OS) ? { os: input.os } : {}),
+    ...(isOneOf(input.deviceType, DEVICE_TYPES) ? { deviceType: input.deviceType } : {}),
+  };
+}
+
 export type IncomingEvent = {
   // Assigned once, when the event is tracked, and sent unchanged on every
   // retry. Delivery is at-least-once — a page that unloads before the
@@ -82,6 +103,10 @@ export type EventBatch = {
   // permission — so the collector must not work a country or region out of
   // the request's address. Absent means no such choice was offered.
   location?: false;
+  // An app's own system and device type, from APP_OS and DEVICE_TYPES. The
+  // collector uses them only when the request's User-Agent says nothing.
+  os?: AppOs;
+  deviceType?: DeviceType;
   events: IncomingEvent[];
 };
 
@@ -172,6 +197,7 @@ export function validateEnvelope(input: unknown): EnvelopeValidationResult {
       // Only false withholds; any other value is dropped rather than read as
       // a choice the SDK never makes.
       ...(input.location === false ? { location: false as const } : {}),
+      ...declaredDevice(input),
     },
     events,
   };
@@ -230,10 +256,14 @@ export function validateBatch(input: unknown, now: number = Date.now()): Validat
   const envelope = validateEnvelope(input);
   if (!envelope.ok) return { ok: false, error: envelope.error };
 
+  const events: IncomingEvent[] = [];
   for (const event of envelope.events) {
     const result = validateEvent(event, now);
     if (!result.ok) return { ok: false, error: result.error };
+    events.push(result.event);
   }
 
-  return { ok: true, batch: input as EventBatch };
+  // The checked envelope rather than the input, so a value the envelope drops
+  // (an unlisted os, say) is dropped here too.
+  return { ok: true, batch: { ...envelope.envelope, events } };
 }

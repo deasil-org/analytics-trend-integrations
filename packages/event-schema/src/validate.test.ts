@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  APP_OS,
+  DEVICE_TYPES,
   LIMITS,
   RESERVED_PROPS,
   validateBatch,
@@ -241,5 +243,29 @@ describe("validateEvent, reserved props", () => {
       const bytes = new TextEncoder().encode(JSON.stringify(worstCase(keys))).length;
       expect(bytes).toBeLessThan(LIMITS.MAX_PROPS_BYTES / 2);
     }
+  });
+});
+
+// An app says what it runs on, since a native app's User-Agent names no
+// browser or system the collector can read. Families from fixed lists only,
+// the same the collector works out for a browser.
+describe("an app's declared system and device type", () => {
+  it("are kept when they are on the list", () => {
+    const result = validateBatch(validBatch({ client: "app", os: "Android", deviceType: "mobile" }), NOW);
+    expect(result.ok && [result.batch.os, result.batch.deviceType]).toEqual(["Android", "mobile"]);
+    const envelope = validateEnvelope(validBatch({ client: "app", os: "macOS", deviceType: "desktop" }));
+    expect(envelope.ok && [envelope.envelope.os, envelope.envelope.deviceType]).toEqual(["macOS", "desktop"]);
+  });
+
+  it("are dropped, not refused, when they are not", () => {
+    const result = validateBatch(validBatch({ client: "app", os: "Android 14 (Pixel 8)", deviceType: "phone" }), NOW);
+    expect(result.ok).toBe(true);
+    expect(result.ok && "os" in result.batch).toBe(false);
+    expect(result.ok && "deviceType" in result.batch).toBe(false);
+  });
+
+  it("lists every system and device type the collector knows", () => {
+    expect(APP_OS).toEqual(["iOS", "Android", "macOS", "Windows", "Linux", "ChromeOS"]);
+    expect(DEVICE_TYPES).toEqual(["mobile", "tablet", "desktop"]);
   });
 });

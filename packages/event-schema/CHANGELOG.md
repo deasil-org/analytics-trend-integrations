@@ -3,6 +3,8 @@
 ## 0.5.0
 
 - **`"app"` is a client kind.** A mobile, desktop, server or game app sending events over HTTP says so with `client: "app"`, instead of passing for a website or an extension. `"web"` and `"extension"` are unchanged, and the SDKs still send them.
+- **An app may say what it runs on.** Optional `os` (`APP_OS`: iOS, Android, macOS, Windows, Linux, ChromeOS) and `deviceType` (`DEVICE_TYPES`: mobile, tablet, desktop) on a batch, since a native app's User-Agent names neither. Values off the list are dropped, not refused.
+- **`validateBatch` returns the checked batch,** with anything the envelope drops left out, rather than its input.
 
 ## 0.3.0
 

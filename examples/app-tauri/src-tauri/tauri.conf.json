@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "AnalyticsTrend example",
+  "version": "1.0.0",
+  "identifier": "com.example.analyticstrend",
+  "build": { "frontendDist": "../src" },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [{ "title": "AnalyticsTrend example", "width": 420, "height": 260 }]
+  },
+  "bundle": { "active": false, "icon": ["icons/icon.ico"] }
+}

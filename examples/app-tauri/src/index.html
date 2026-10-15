@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AnalyticsTrend example</title>
+  </head>
+  <body style="font-family: system-ui; padding: 24px">
+    <p>Each click sends an event from the app's Rust side.</p>
+    <button id="track">Create a note</button>
+    <p id="answer" role="status"></p>
+    <script>
+      const { invoke } = window.__TAURI__.core;
+      document.getElementById("track").addEventListener("click", async () => {
+        const answer = document.getElementById("answer");
+        try {
+          answer.textContent = await invoke("track", { name: "note_created" });
+        } catch (error) {
+          answer.textContent = `Could not send: ${error}`;
+        }
+      });
+      invoke("track", { name: "app_opened" });
+    </script>
+  </body>
+</html>

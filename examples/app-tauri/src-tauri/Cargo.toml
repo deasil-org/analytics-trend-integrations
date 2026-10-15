@@ -1,0 +1,22 @@
+[package]
+name = "example-app-tauri"
+version = "1.0.0"
+edition = "2021"
+# Builds on any Rust from 1.80: Cargo then picks dependency versions that do too.
+rust-version = "1.80"
+resolver = "3"
+publish = false
+
+[lib]
+name = "example_app_tauri_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+serde_json = "1"
+ureq = "2"
+uuid = { version = "1", features = ["v4"] }

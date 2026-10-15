@@ -3,13 +3,17 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.25.0",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "test": "pnpm build:packages && node --test \"scripts/*.test.mjs\" && pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "build": "pnpm -r --if-present build",
     "build:packages": "pnpm -r --filter \"./packages/*\" build",
     "check": "node scripts/check-manifest.mjs",
-    "release": "pnpm -r --filter \"./packages/*\" publish --access public"
+    "release": "pnpm -r --filter \"./packages/*\" publish --access public",
+    "mock-collector": "node scripts/mock-collector.mjs",
+    "check:app-examples": "node scripts/check-app-examples.mjs"
   }
 }

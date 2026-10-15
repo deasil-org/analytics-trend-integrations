@@ -13,6 +13,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { existsSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { APP_OS, DEVICE_TYPES } from "../packages/event-schema/dist/index.js";
 import { MOCK_PORT, startMockCollector } from "./mock-collector.mjs";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -71,6 +72,12 @@ function problemWith(example, batches, earlier) {
   const names = batch.events.map((event) => event.name);
   if (example.events.some((name) => !names.includes(name))) return `sent ${names.join(", ")}, not ${example.events.join(", ")}`;
   if (example.server && batch.location !== false) return "a server example must send location: false";
+  // An app says what it runs on; a server does not, since its system is not
+  // the user's.
+  if (example.server && (batch.os || batch.deviceType)) return "a server example must not declare an os or device type";
+  if (!example.server && (!APP_OS.includes(batch.os) || !DEVICE_TYPES.includes(batch.deviceType))) {
+    return `declared os "${batch.os}" and device type "${batch.deviceType}", not one of the collector's families`;
+  }
   if (earlier) {
     if (batch.anonymousId !== earlier.anonymousId) return "did not keep its anonymous id between runs";
     const before = new Set(earlier.events.map((event) => event.id));

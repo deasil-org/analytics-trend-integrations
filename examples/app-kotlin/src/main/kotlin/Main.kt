@@ -17,6 +17,18 @@ class Analytics(
 ) {
     private val queue = mutableListOf<String>()
 
+    // The system and device type, as the collector's families: a native app's
+    // User-Agent names neither. Android reports its system as Linux, so it is
+    // told apart by its runtime. Never a version or a model.
+    private val android = System.getProperty("java.vm.vendor")?.contains("Android") == true
+    private val os = when {
+        android -> "Android"
+        System.getProperty("os.name").startsWith("Windows") -> "Windows"
+        System.getProperty("os.name").startsWith("Mac") -> "macOS"
+        else -> "Linux"
+    }
+    private val deviceType = if (android) "mobile" else "desktop"
+
     /** One random id per user, made once and kept. Never an email, an account id or the Android ID. */
     val anonymousId: String
         get() {
@@ -32,7 +44,8 @@ class Analytics(
     /** Sends the queue as one batch. A network error or a 5xx is retried with the same body; a 4xx is not. */
     fun flush(): Pair<Int, String> {
         val body = "{\"writeKey\":${quote(writeKey)},\"client\":\"app\",\"clientVersion\":\"example-kotlin-1.0.0\"," +
-            "\"appVersion\":${quote(appVersion)},\"anonymousId\":${quote(anonymousId)},\"events\":[${queue.joinToString(",")}]}"
+            "\"appVersion\":${quote(appVersion)},\"anonymousId\":${quote(anonymousId)}," +
+            "\"os\":${quote(os)},\"deviceType\":${quote(deviceType)},\"events\":[${queue.joinToString(",")}]}"
         val delays = listOf(500L, 1000L, 2000L)
         for (attempt in 0..delays.size) {
             try {

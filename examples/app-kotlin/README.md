@@ -5,6 +5,10 @@ whole client: a queue of events, an anonymous id, and one batch per `flush()` se
 `client: "app"`, retried with the same body after a network error or a 5xx. It uses
 `HttpURLConnection`, which Android has, so it works unchanged in an Android app.
 
+It also sends `os` and `deviceType` (Android is told apart from Linux by its runtime), because a native app's User-Agent names
+neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
+desktop. Never a version or a model.
+
 ## Try it against the mock collector
 
 From the repository root:

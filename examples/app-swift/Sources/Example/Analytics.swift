@@ -4,6 +4,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+#if canImport(UIKit)
+import UIKit
+#endif
 
 final class Analytics {
     private let writeKey: String
@@ -11,6 +14,22 @@ final class Analytics {
     private let idFile: URL
     private let appVersion: String
     private var queue: [[String: Any]] = []
+
+    /// The system and device type, as the collector's families: a native
+    /// app's User-Agent names neither. Never a version or a model.
+    #if os(iOS)
+    static let os = "iOS"
+    static let deviceType = UIDevice.current.userInterfaceIdiom == .pad ? "tablet" : "mobile"
+    #elseif os(macOS)
+    static let os = "macOS"
+    static let deviceType = "desktop"
+    #elseif os(Windows)
+    static let os = "Windows"
+    static let deviceType = "desktop"
+    #else
+    static let os = "Linux"
+    static let deviceType = "desktop"
+    #endif
 
     init(writeKey: String, endpoint: URL, idFile: URL, appVersion: String) {
         self.writeKey = writeKey
@@ -46,6 +65,8 @@ final class Analytics {
             "clientVersion": "example-swift-1.0.0",
             "appVersion": appVersion,
             "anonymousId": anonymousId,
+            "os": Analytics.os,
+            "deviceType": Analytics.deviceType,
             "events": queue,
         ]
         guard let body = try? JSONSerialization.data(withJSONObject: batch) else { return nil }

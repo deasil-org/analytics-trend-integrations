@@ -23,6 +23,15 @@ return 0;
 class Analytics(string writeKey, string endpoint, string idFile, string appVersion)
 {
     static readonly HttpClient Http = new();
+
+    // The system, as one of the collector's families: a native app's
+    // User-Agent names none. Never a version or a model.
+    static string Os =>
+        OperatingSystem.IsWindows() ? "Windows"
+        : OperatingSystem.IsMacOS() ? "macOS"
+        : OperatingSystem.IsIOS() ? "iOS"
+        : OperatingSystem.IsAndroid() ? "Android"
+        : "Linux";
     readonly List<object> queue = [];
 
     // One random id per user, made once and kept. Never an email address, an
@@ -53,6 +62,8 @@ class Analytics(string writeKey, string endpoint, string idFile, string appVersi
             clientVersion = "example-dotnet-1.0.0",
             appVersion,
             anonymousId = AnonymousId,
+            os = Os,
+            deviceType = OperatingSystem.IsIOS() || OperatingSystem.IsAndroid() ? "mobile" : "desktop",
             events = queue,
         });
         int[] delays = [500, 1000, 2000];

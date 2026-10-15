@@ -5,6 +5,10 @@ queue of events, an anonymous id, and one batch per `flush()` sent with `client:
 with the same body after a network error or a 5xx. Copy it into an iOS or macOS app. It uses
 `URLSession` only, and builds on Linux too, for a server.
 
+It also sends `os` and `deviceType` (chosen at compile time; an iPad says tablet), because a native app's User-Agent names
+neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
+desktop. Never a version or a model. On a server, leave both out: its system is not its user's.
+
 ## Try it against the mock collector
 
 From the repository root:

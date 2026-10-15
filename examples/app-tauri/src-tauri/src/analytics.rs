@@ -10,6 +10,25 @@ use chrono::{SecondsFormat, Utc};
 use serde_json::{json, Value};
 use uuid::Uuid;
 
+/// The system this runs on, as one of the collector's families. A native
+/// app's User-Agent names none, so the app says it: never a version or a model.
+pub fn os() -> &'static str {
+    match std::env::consts::OS {
+        "windows" => "Windows",
+        "macos" => "macOS",
+        "ios" => "iOS",
+        "android" => "Android",
+        _ => "Linux",
+    }
+}
+
+pub fn device_type() -> &'static str {
+    match std::env::consts::OS {
+        "ios" | "android" => "mobile",
+        _ => "desktop",
+    }
+}
+
 pub struct Analytics {
     write_key: String,
     endpoint: String,
@@ -63,6 +82,8 @@ impl Analytics {
             "clientVersion": self.client_version,
             "appVersion": self.app_version,
             "anonymousId": self.anonymous_id(),
+            "os": os(),
+            "deviceType": device_type(),
             "events": self.queue,
         })
     }
@@ -122,6 +143,8 @@ mod tests {
         assert_eq!(batch["client"], "app");
         assert_eq!(batch["appVersion"], "2.3.0");
         assert_eq!(batch["events"][0]["name"], "app_opened");
+        assert_eq!(batch["os"], os());
+        assert_eq!(batch["deviceType"], "desktop");
     }
 
     #[test]

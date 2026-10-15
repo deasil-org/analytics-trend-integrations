@@ -35,7 +35,9 @@ and no remote code.
 A mobile, desktop, server or game app needs no SDK: it sends events to the collector over HTTP,
 with `client: "app"`. Each example below does the same four things, so they compare line for
 line: it reads the write key from `ANALYTICSTREND_WRITE_KEY`, keeps a random anonymous id,
-sends its events as one batch, and retries a failed send with the same event ids.
+sends its events as one batch, and retries a failed send with the same event ids. An app also
+says what it runs on, with `os` and `deviceType`, since its User-Agent names neither; a server
+sends neither, and sends `"location": false`.
 
 | Example | For |
 | --- | --- |

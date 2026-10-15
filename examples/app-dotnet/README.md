@@ -4,6 +4,10 @@ AnalyticsTrend over HTTP, with no SDK. The `Analytics` class in `Program.cs` is 
 a queue of events, an anonymous id, and one batch per `FlushAsync()` sent with `client: "app"`,
 retried with the same body after a network error or a 5xx.
 
+It also sends `os` and `deviceType` (from `OperatingSystem`), because a native app's User-Agent names
+neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
+desktop. Never a version or a model.
+
 ## Try it against the mock collector
 
 From the repository root:

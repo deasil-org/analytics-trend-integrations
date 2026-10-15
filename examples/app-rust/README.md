@@ -4,6 +4,10 @@ AnalyticsTrend over HTTP, with no SDK. `src/analytics.rs` is the whole client: a
 an anonymous id kept in a file, and one batch per `flush()` sent with `client: "app"`, retried with
 the same body after a network error or a 5xx. Copy it into a native app or a server.
 
+It also sends `os` and `deviceType` (from `std::env::consts::OS`), because a native app's User-Agent names
+neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
+desktop. Never a version or a model. On a server, leave both out: its system is not its user's.
+
 ## Try it against the mock collector
 
 From the repository root:

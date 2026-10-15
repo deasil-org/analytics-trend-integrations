@@ -5,6 +5,10 @@ page calls a `track` command; the command queues the event and sends the queue, 
 thread. The client is `src-tauri/src/analytics.rs`, the same as in the Rust example, and the
 anonymous id lives in the app's data directory (`app.path().app_data_dir()`).
 
+It also sends `os` and `deviceType` (from `std::env::consts::OS`), because a native app's User-Agent names
+neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
+desktop. Never a version or a model.
+
 ## Run it
 
 You need [Tauri's prerequisites](https://tauri.app/start/prerequisites/) and its CLI

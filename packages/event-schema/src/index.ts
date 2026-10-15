@@ -58,7 +58,7 @@ export const RESERVED_PROPS = [
 
 const RESERVED = new Set<string>(RESERVED_PROPS);
 
-export type ClientKind = "extension" | "web";
+export type ClientKind = "extension" | "web" | "app";
 
 export type IncomingEvent = {
   // Assigned once, when the event is tracked, and sent unchanged on every
@@ -129,8 +129,10 @@ export function validateEnvelope(input: unknown): EnvelopeValidationResult {
   if (!isNonEmptyString(input.writeKey, LIMITS.MAX_ID_LENGTH)) {
     return { ok: false, error: "writeKey is required" };
   }
-  if (input.client !== "extension" && input.client !== "web") {
-    return { ok: false, error: "client must be 'extension' or 'web'" };
+  // "app" is anything sending over HTTP without an SDK: a mobile, desktop,
+  // server or game app.
+  if (input.client !== "extension" && input.client !== "web" && input.client !== "app") {
+    return { ok: false, error: "client must be 'extension', 'web' or 'app'" };
   }
   if (!isNonEmptyString(input.clientVersion, LIMITS.MAX_ID_LENGTH)) {
     return { ok: false, error: "clientVersion is required" };

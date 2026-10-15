@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- **`"app"` is a client kind.** A mobile, desktop, server or game app sending events over HTTP says so with `client: "app"`, instead of passing for a website or an extension. `"web"` and `"extension"` are unchanged, and the SDKs still send them.
+
 ## 0.3.0
 
 - **`location: false` on a batch.** A batch can say that the person declined location, and `validateEnvelope` carries it through. Only `false` counts; any other value is dropped rather than guessed at. The collector then works no country or region out of the request's address.

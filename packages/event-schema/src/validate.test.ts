@@ -37,7 +37,14 @@ describe("validateBatch", () => {
 
   it("rejects an unknown client kind", () => {
     const result = validateBatch(validBatch({ client: "mobile" }), NOW);
-    expect(result).toEqual({ ok: false, error: "client must be 'extension' or 'web'" });
+    expect(result).toEqual({ ok: false, error: "client must be 'extension', 'web' or 'app'" });
+  });
+
+  // A mobile, desktop, server or game app sending over HTTP.
+  it("accepts an app as the client", () => {
+    const result = validateBatch(validBatch({ client: "app" }), NOW);
+    expect(result.ok).toBe(true);
+    expect(result.ok && result.batch.client).toBe("app");
   });
 
   it("rejects an empty event list", () => {

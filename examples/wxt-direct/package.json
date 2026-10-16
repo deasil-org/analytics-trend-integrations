@@ -9,6 +9,6 @@
     "typecheck": "wxt prepare && tsc --noEmit",
     "postinstall": "wxt prepare"
   },
-  "dependencies": { "@analyticstrend/extension": "^0.5.0" },
+  "dependencies": { "@analyticstrend/extension": "^0.6.0" },
   "devDependencies": { "typescript": "^5.9.3", "wxt": "^0.21.4" }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@analyticstrend/wxt-analytics",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AnalyticsTrend for WXT's analytics module: durable delivery, Firefox consent and uninstall tracking, and nothing about the pages people visit.",
   "type": "module",
   "main": "./src/index.ts",
@@ -13,7 +13,7 @@
     "prepublishOnly": "node ../../scripts/require-pnpm-publish.mjs"
   },
   "dependencies": {
-    "@analyticstrend/extension": "^0.5.0"
+    "@analyticstrend/extension": "^0.6.0"
   },
   "peerDependencies": {
     "@wxt-dev/analytics": ">=0.5.4 <0.6.0"

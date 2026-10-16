@@ -20,6 +20,9 @@ const analytics = initBackground({
 analytics.track("popup_opened");
 ```
 
+The manifest's `version` goes with every batch as the app version, for the Versions report;
+pass `appVersion` to send another.
+
 Events are written to extension storage before any send, so a suspended service worker
 mid-flush loses nothing and never sends twice.
 

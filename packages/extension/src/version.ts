@@ -6,4 +6,4 @@
 // in 0.1.0 — and events from the broken release have to be distinguishable from
 // the fixed one in the data. version.test.ts fails if this and package.json
 // ever disagree, which is the whole of the maintenance burden.
-export const EXTENSION_SDK_VERSION = "0.5.0";
+export const EXTENSION_SDK_VERSION = "0.6.0";

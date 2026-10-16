@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- **The version is sent for you.** `initBackground` sends the manifest's `version` as `appVersion` when you give none, so the Versions report works with no code change. An `appVersion` you pass still wins.
+
 ## 0.5.0
 
 - **Your own consent switch.** `initBackground({ consent })` takes a function that says whether the person has allowed analytics, as a boolean or a promise of one. It is asked before every event and every send, alongside Firefox's data-collection consent and Global Privacy Control, and all of them have to allow it. While it says no, nothing is sent or stored, no identifier is created, and the uninstall link is cleared. Anything but `true`, an error or a rejected promise counts as no.

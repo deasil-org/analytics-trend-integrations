@@ -130,6 +130,19 @@ function globalPrivacyControl(): boolean {
  * order. `await initBackground(...)` still works where top-level await is
  * allowed, because awaiting a non-promise returns it unchanged.
  */
+// The version the manifest declares, sent as appVersion when none is given,
+// so an extension's Versions report needs no code. Anything but a non-empty
+// string, or a manifest that cannot be read, means no version rather than a
+// failure to start.
+function manifestVersion(api: BrowserApi): string | undefined {
+  try {
+    const manifest = api.runtime.getManifest?.() as { version?: unknown } | undefined;
+    return typeof manifest?.version === "string" && manifest.version !== "" ? manifest.version : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function initBackground(options: {
   writeKey: string;
   endpoint?: string;
@@ -217,7 +230,7 @@ export function initBackground(options: {
         writeKey: options.writeKey,
         client: "extension",
         clientVersion: EXTENSION_SDK_VERSION,
-        appVersion: options.appVersion,
+        appVersion: options.appVersion ?? manifestVersion(api),
         anonymousId,
         storage: createExtensionStorage(api),
         transport: createTransport(endpoint),

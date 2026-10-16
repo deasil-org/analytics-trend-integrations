@@ -856,6 +856,35 @@ describe.each(NAMESPACES)("initBackground on the %s namespace", (namespace) => {
     });
   });
 
+  // The manifest already says which version is running, so an extension gets
+  // a Versions report with no code change; an explicit appVersion still wins.
+  describe("the app version", () => {
+    async function sentWith(manifest: (() => unknown) | undefined, options: { appVersion?: string } = {}) {
+      const api = installApi(namespace) as FakeApi & { runtime: { getManifest?: () => unknown } };
+      if (manifest) api.runtime.getManifest = manifest;
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200 });
+      vi.stubGlobal("fetch", fetchMock);
+      const client = await initBackground({ writeKey: "wk_test", ...options });
+      await client.track("popup_opened");
+      await client.flush();
+      return JSON.parse(String(fetchMock.mock.calls.at(-1)?.[1]?.body)) as { appVersion?: string };
+    }
+
+    it("is the manifest's version when none is given", async () => {
+      expect((await sentWith(() => ({ version: "3.1.0" }))).appVersion).toBe("3.1.0");
+    });
+
+    it("is the one given, over the manifest's", async () => {
+      expect((await sentWith(() => ({ version: "3.1.0" }), { appVersion: "1.2.3" })).appVersion).toBe("1.2.3");
+    });
+
+    it("is left out when the manifest cannot say, and the client still starts", async () => {
+      expect((await sentWith(undefined)).appVersion).toBeUndefined();
+      expect((await sentWith(() => ({ version: 3 }))).appVersion).toBeUndefined();
+      expect((await sentWith(() => ({ version: "" }))).appVersion).toBeUndefined();
+    });
+  });
+
   // Pins the wire fields the collector keys on. Without this, `client` could
   // be changed to any other ClientKind and every other test here would stay
   // green while every event landed under the wrong platform.

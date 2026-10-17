@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- **`page_engagement` and `$engaged_ms`.** The web SDK's signal of how long a page was visible, from 0.6.0. `$engaged_ms` is reserved. It is kept only on a `page_engagement` event, as a whole number from 1,000 to 1,800,000 (`LIMITS.MIN_ENGAGED_MS`, `LIMITS.MAX_ENGAGED_MS`); anywhere else it is dropped and the event kept. `ENGAGEMENT_EVENT` names the event.
+
 ## 0.5.0
 
 - **`"app"` is a client kind.** A mobile, desktop, server or game app sending events over HTTP says so with `client: "app"`, instead of passing for a website or an extension. `"web"` and `"extension"` are unchanged, and the SDKs still send them.

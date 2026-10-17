@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   APP_OS,
+  ENGAGEMENT_EVENT,
   DEVICE_TYPES,
   LIMITS,
   RESERVED_PROPS,
@@ -267,5 +268,38 @@ describe("an app's declared system and device type", () => {
   it("lists every system and device type the collector knows", () => {
     expect(APP_OS).toEqual(["iOS", "Android", "macOS", "Windows", "Linux", "ChromeOS"]);
     expect(DEVICE_TYPES).toEqual(["mobile", "tablet", "desktop"]);
+  });
+});
+
+describe("$engaged_ms", () => {
+  const ts = new Date().toISOString();
+  const props = (event: unknown) => (event as { props?: Record<string, unknown> }).props;
+
+  it("is kept on a page_engagement within 1 second and 30 minutes", () => {
+    for (const ms of [LIMITS.MIN_ENGAGED_MS, 61_234, LIMITS.MAX_ENGAGED_MS]) {
+      const result = validateEvent({ name: ENGAGEMENT_EVENT, ts, props: { $engaged_ms: ms, $path: "/" } });
+      expect(result.ok && props(result.event)).toEqual({ $engaged_ms: ms, $path: "/" });
+    }
+  });
+
+  it("is dropped, not refused, when out of range, not a whole number, or on another event", () => {
+    const cases = [
+      { name: ENGAGEMENT_EVENT, props: { $engaged_ms: 999, $path: "/" } },
+      { name: ENGAGEMENT_EVENT, props: { $engaged_ms: 1_800_001, $path: "/" } },
+      { name: ENGAGEMENT_EVENT, props: { $engaged_ms: 1500.5, $path: "/" } },
+      { name: ENGAGEMENT_EVENT, props: { $engaged_ms: "2000", $path: "/" } },
+      { name: "page_view", props: { $engaged_ms: 5000, $path: "/" } },
+    ];
+    for (const input of cases) {
+      const result = validateEvent({ ...input, ts });
+      expect(result.ok).toBe(true);
+      expect(result.ok && props(result.event)).toEqual({ $path: "/" });
+    }
+  });
+
+  it("names the signal and its limits", () => {
+    expect(ENGAGEMENT_EVENT).toBe("page_engagement");
+    expect(LIMITS.MIN_ENGAGED_MS).toBe(1000);
+    expect(LIMITS.MAX_ENGAGED_MS).toBe(1_800_000);
   });
 });

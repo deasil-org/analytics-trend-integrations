@@ -25,9 +25,18 @@ export const LIMITS = {
   // Seven days. Guards the rollups against a client with a badly wrong
   // clock (or a replayed queue) writing events into a far-off day.
   MAX_CLOCK_SKEW_MS: 7 * 24 * 60 * 60 * 1000,
+  // How long one page_engagement signal may say a page was visible (visits
+  // spec §2). Under a second is noise the SDK carries over; over 30 minutes is
+  // a tab left open, which must not inflate a visit's length.
+  MIN_ENGAGED_MS: 1000,
+  MAX_ENGAGED_MS: 1_800_000,
 } as const;
 
 export const EVENT_NAME_PATTERN = /^[a-z0-9_]{1,64}$/;
+
+// The web SDK's own signal of how long a page was visible (visits spec §2).
+// Reserved: a customer's event of this name is read as the signal.
+export const ENGAGEMENT_EVENT = "page_engagement";
 
 export const RESERVED_PROP_PREFIX = "$";
 
@@ -54,6 +63,8 @@ export const RESERVED_PROPS = [
   // Link events (web SDK 0.5.0): a hostname only, and a file name only.
   "$host",
   "$file",
+  // How long the page was visible, on page_engagement only (web SDK 0.6.0).
+  "$engaged_ms",
 ] as const;
 
 const RESERVED = new Set<string>(RESERVED_PROPS);
@@ -203,6 +214,15 @@ export function validateEnvelope(input: unknown): EnvelopeValidationResult {
   };
 }
 
+function engagedMsValid(name: string, value: unknown): boolean {
+  return (
+    name === ENGAGEMENT_EVENT &&
+    Number.isInteger(value) &&
+    (value as number) >= LIMITS.MIN_ENGAGED_MS &&
+    (value as number) <= LIMITS.MAX_ENGAGED_MS
+  );
+}
+
 export function validateEvent(input: unknown, now: number = Date.now()): EventValidationResult {
   if (!isObject(input)) return { ok: false, error: "each event must be an object" };
 
@@ -244,6 +264,14 @@ export function validateEvent(input: unknown, now: number = Date.now()): EventVa
     }
   }
 
+  // A visible time is kept only where it means something: on the signal, as a
+  // whole number of milliseconds in range. Anywhere else it is dropped rather
+  // than refused, so the event and its batch still arrive.
+  const props = input.props as Record<string, unknown> | undefined;
+  if (props && "$engaged_ms" in props && !engagedMsValid(input.name, props.$engaged_ms)) {
+    const { $engaged_ms: _dropped, ...rest } = props;
+    return { ok: true, event: { ...(input as IncomingEvent), props: rest } };
+  }
   return { ok: true, event: input as IncomingEvent };
 }
 

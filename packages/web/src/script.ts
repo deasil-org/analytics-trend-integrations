@@ -47,6 +47,7 @@ export function startFromScript(
     ...(data.contactLinks === "true" ? { contactLinks: true } : {}),
     ...(data.endpoint ? { endpoint: data.endpoint } : {}),
     ...(data.autoCapture === "false" ? { autoCapture: false } : {}),
+    ...(data.engagement === "false" ? { engagement: false } : {}),
     ...(data.respectGpc === "false" ? { respectGlobalPrivacyControl: false } : {}),
     ...(data.clearOnGpc === "true" ? { clearDataOnGlobalPrivacyControl: true } : {}),
   });

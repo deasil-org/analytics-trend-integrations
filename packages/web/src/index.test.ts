@@ -757,6 +757,70 @@ describe("init", () => {
 
     expect(() => init({ writeKey: WRITE_KEY })).not.toThrow();
   });
+
+  describe("engagement", () => {
+    function clock() {
+      let now = 0;
+      vi.spyOn(performance, "now").mockImplementation(() => now);
+      return (ms: number) => void (now += ms);
+    }
+
+    afterEach(() => vi.restoreAllMocks());
+
+    it("sends the visible time in the flush that runs when the page is hidden", async () => {
+      const { listeners, doc, fetchMock } = stubPage(fakeStorage());
+      vi.stubGlobal("location", { href: "https://shop.example/", origin: "https://shop.example", pathname: "/" });
+      stubHistory();
+      doc.visibilityState = "visible";
+      const advance = clock();
+
+      init({ writeKey: WRITE_KEY });
+      await settle();
+      advance(4_000);
+      doc.visibilityState = "hidden";
+      fetchMock.mockClear();
+      listeners.get("visibilitychange")?.();
+      await settle();
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const events = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body)).events;
+      expect(events).toEqual([
+        expect.objectContaining({ name: "page_engagement", props: expect.objectContaining({ $engaged_ms: 4_000, $path: "/" }) }),
+      ]);
+    });
+
+    it("reports the page being left on an in-app navigation", async () => {
+      const { listeners, doc, fetchMock } = stubPage(fakeStorage());
+      vi.stubGlobal("location", { href: "https://shop.example/a", origin: "https://shop.example", pathname: "/a" });
+      const history = stubHistory();
+      doc.visibilityState = "visible";
+      const advance = clock();
+
+      init({ writeKey: WRITE_KEY });
+      await settle();
+      advance(3_000);
+      history.pushState({}, "", "/b");
+
+      expect(await sentNames(listeners, fetchMock)).toContain("page_engagement /a");
+    });
+
+    it("sends nothing with engagement: false, or with auto-capture off", async () => {
+      for (const options of [{ engagement: false }, { autoCapture: false }]) {
+        const { listeners, doc, fetchMock } = stubPage(fakeStorage());
+        vi.stubGlobal("location", { href: "https://shop.example/", origin: "https://shop.example", pathname: "/" });
+        stubHistory();
+        doc.visibilityState = "visible";
+        const advance = clock();
+
+        init({ writeKey: WRITE_KEY, ...options });
+        await settle();
+        advance(9_000);
+        doc.visibilityState = "hidden";
+
+        expect(await sentNames(listeners, fetchMock)).not.toContainEqual(expect.stringContaining("page_engagement"));
+      }
+    });
+  });
 });
 
 describe("init, auto-capture", () => {

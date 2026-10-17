@@ -94,6 +94,16 @@ describe("startFromScript", () => {
     });
   });
 
+  it("turns the engagement signal off with data-engagement=\"false\", and leaves it on otherwise", () => {
+    const off = fakeStart();
+    startFromScript(tag({ writeKey: "wk_123", engagement: "false" }), {} as Window, off.start);
+    expect(off.start.mock.calls[0]?.[0]).toMatchObject({ engagement: false });
+
+    const on = fakeStart();
+    startFromScript(tag({ writeKey: "wk_123" }), {} as Window, on.start);
+    expect(on.start.mock.calls[0]?.[0]).not.toHaveProperty("engagement");
+  });
+
   it("warns once and starts nothing without a write key", () => {
     const { start } = fakeStart();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});

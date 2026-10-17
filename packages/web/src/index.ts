@@ -1,4 +1,4 @@
-import type { IncomingEvent } from "@analyticstrend/event-schema";
+import { ENGAGEMENT_EVENT, type IncomingEvent } from "@analyticstrend/event-schema";
 import {
   createClient,
   isRetryableStatus,
@@ -10,6 +10,7 @@ import {
   type TransportAdapter,
 } from "@analyticstrend/sdk-core";
 import { createCapture } from "./capture.ts";
+import { createEngagement } from "./engagement.ts";
 import { watchLinks } from "./links.ts";
 import { watchNavigation } from "./navigation.ts";
 import { WEB_SDK_VERSION } from "./version.ts";
@@ -246,6 +247,10 @@ export function init(options: {
   // for most of them. The escape hatch is here for the compliance review that
   // objects to implicit collection at all.
   autoCapture?: boolean;
+  // On with auto-capture (visits spec §2): how long each page was visible,
+  // sent when it is hidden and when the path changes, so visit durations and
+  // bounces are real. false turns it off on its own.
+  engagement?: boolean;
   // On by default: a browser sending Global Privacy Control sends nothing and
   // stores nothing. Turn it off only on a considered legal position.
   respectGlobalPrivacyControl?: boolean;
@@ -291,11 +296,24 @@ export function init(options: {
     flushAt: DEFAULT_FLUSH_AT,
   });
 
+  // Set once the capturing client exists, below. Hiding the page reports its
+  // visible time first, so the signal leaves in the very flush that follows:
+  // track and flush run in call order on one client (sdk-core serialize).
+  let beforeHide = () => {};
+  let onShown = () => {};
   // pagehide is the reliable "the page is going away" signal across browsers;
   // visibilitychange catches tab switches on mobile, where pagehide may not fire.
-  addEventListener("pagehide", () => void client.flush({ unloading: true }));
+  addEventListener("pagehide", () => {
+    beforeHide();
+    void client.flush({ unloading: true });
+  });
   addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") void client.flush({ unloading: true });
+    if (document.visibilityState === "hidden") {
+      beforeHide();
+      void client.flush({ unloading: true });
+    } else {
+      onShown();
+    }
   });
 
   // The startup flush, and it is load-bearing rather than an optimisation.
@@ -322,17 +340,30 @@ export function init(options: {
     origin: location.origin,
   }));
 
-  return watchPage(
-    {
-      ...client,
-      enabled: true,
-      // The caller's props go last. Theirs is the explicit instruction, and the
-      // reserved namespace means an overlap can only ever be deliberate.
-      track: (name: string, props?: Record<string, unknown>) =>
-        client.track(name, { ...capture(name), ...props }),
-    },
-    options,
-  );
+  const captured: WebClient = {
+    ...client,
+    enabled: true,
+    // The caller's props go last. Theirs is the explicit instruction, and the
+    // reserved namespace means an overlap can only ever be deliberate.
+    track: (name: string, props?: Record<string, unknown>) => client.track(name, { ...capture(name), ...props }),
+  };
+
+  if (options.engagement !== false) {
+    const engagement = createEngagement({
+      now: () => performance.now(),
+      visible: document.visibilityState === "visible",
+      path: globalThis.location?.pathname ?? "",
+      // The path is the page being left, given here because capture reads
+      // the address as it is now, which a navigation has already changed.
+      send: (props) => void captured.track(ENGAGEMENT_EVENT, props),
+    });
+    beforeHide = () => engagement.hidden();
+    onShown = () => engagement.shown();
+    // A runtime without the History API has no in-app navigation to watch.
+    if (globalThis.history) watchNavigation((path) => engagement.moved(path));
+  }
+
+  return watchPage(captured, options);
 }
 
 // Page views on navigation, and link events, when asked for. Both go through

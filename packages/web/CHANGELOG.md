@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- **How long each page was visible.** With auto-capture on (the default), the SDK sends a `page_engagement` event with `$engaged_ms` when the page is hidden or closed, and when a single-page app moves to another path. It counts only time the page was visible, sends nothing under a second (carried over to the next signal), and at most 30 minutes in one signal. It carries no identity: the same random identifier and captured props as every event. AnalyticsTrend uses it for visit duration and bounce rate. **This is a new kind of collection that is on by default**, so check that your privacy wording covers how long pages are viewed. `init({ engagement: false })` or `data-engagement="false"` turns it off alone; `autoCapture: false` turns it off with the rest.
+- **`page_engagement` is reserved** for this signal: an event of your own with that name is read as one.
+
 ## 0.4.0
 
 - **A script tag for sites without a build step.** `dist/script.js` is the whole SDK in one

@@ -41,6 +41,12 @@ class Analytics(
         queue += "{\"id\":${quote(UUID.randomUUID().toString())},\"name\":${quote(name)},\"ts\":${quote(Instant.now().toString())}}"
     }
 
+    /** A screen as it appears, by the name you give it: never a person's name, a note's title or an id. */
+    fun screen(name: String) {
+        queue += "{\"id\":${quote(UUID.randomUUID().toString())},\"name\":\"screen_view\",\"ts\":${quote(Instant.now().toString())}," +
+            "\"props\":{\"\$screen\":${quote(name)}}}"
+    }
+
     /** Sends the queue as one batch. A network error or a 5xx is retried with the same body; a 4xx is not. */
     fun flush(): Pair<Int, String> {
         val body = "{\"writeKey\":${quote(writeKey)},\"client\":\"app\",\"clientVersion\":\"example-kotlin-1.0.0\"," +
@@ -81,6 +87,7 @@ fun main() {
     // Kept beside the program here; an Android app keeps it in SharedPreferences.
     val analytics = Analytics(writeKey, endpoint, File(".analyticstrend-id"), "1.0.0")
     analytics.track("app_opened")
+    analytics.screen("Notes")
     analytics.track("note_created")
     val (status, body) = analytics.flush()
     println("$status $body")

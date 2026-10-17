@@ -37,7 +37,8 @@ with `client: "app"`. Each example below does the same four things, so they comp
 line: it reads the write key from `ANALYTICSTREND_WRITE_KEY`, keeps a random anonymous id,
 sends its events as one batch, and retries a failed send with the same event ids. An app also
 says what it runs on, with `os` and `deviceType`, since its User-Agent names neither; a server
-sends neither, and sends `"location": false`.
+sends neither, and sends `"location": false`. An app also sends a `screen_view` with a `$screen` when a screen
+appears; a server has none.
 
 | Example | For |
 | --- | --- |

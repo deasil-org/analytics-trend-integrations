@@ -65,6 +65,9 @@ export const RESERVED_PROPS = [
   "$file",
   // How long the page was visible, on page_engagement only (web SDK 0.6.0).
   "$engaged_ms",
+  // Screen views (0.7.0): the screen an app shows, as the app names it, on a
+  // screen_view event. Sent by the app itself, with no SDK.
+  "$screen",
 ] as const;
 
 const RESERVED = new Set<string>(RESERVED_PROPS);

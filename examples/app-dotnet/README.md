@@ -8,6 +8,10 @@ It also sends `os` and `deviceType` (from `OperatingSystem`), because a native a
 neither: one of iOS, Android, macOS, Windows, Linux or ChromeOS, and one of mobile, tablet or
 desktop. Never a version or a model.
 
+When a screen appears, `analytics.Screen("Notes")` sends a `screen_view` with its name as `$screen`, for the
+Screens report. Name screens as you would to a colleague; never put a person's name, a note's
+title or an id in one.
+
 ## Try it against the mock collector
 
 From the repository root:

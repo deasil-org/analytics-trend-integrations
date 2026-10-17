@@ -17,6 +17,7 @@ fn main() {
     let id_file = PathBuf::from(".analyticstrend-id");
     let mut analytics = analytics::Analytics::new(&write_key, &endpoint, id_file, "1.0.0", "example-rust-1.0.0");
     analytics.track("app_opened");
+    analytics.screen("Notes");
     analytics.track("note_created");
 
     match analytics.flush() {

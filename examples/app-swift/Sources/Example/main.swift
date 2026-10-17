@@ -11,6 +11,7 @@ let idFile = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appe
 
 let analytics = Analytics(writeKey: writeKey, endpoint: endpoint, idFile: idFile, appVersion: "1.0.0")
 analytics.track("app_opened")
+analytics.screen("Notes")
 analytics.track("note_created")
 if let answer = analytics.flush() {
     print(answer.status, answer.body)

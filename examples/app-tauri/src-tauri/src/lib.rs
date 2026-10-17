@@ -1,6 +1,6 @@
 //! A Tauri 2 app sending events to AnalyticsTrend from its Rust side, over
-//! HTTP, with no SDK. The page calls the `track` command; the command queues
-//! the event and sends the queue.
+//! HTTP, with no SDK. The page calls the `track` and `screen` commands; each
+//! queues its event and sends the queue.
 
 mod analytics;
 
@@ -19,6 +19,14 @@ fn track(name: String, tracker: State<Tracker>) -> Result<String, String> {
     analytics.flush().map(|(status, body)| format!("{status} {body}"))
 }
 
+// A screen as it appears, by the name the page gives it.
+#[tauri::command(async)]
+fn screen(name: String, tracker: State<Tracker>) -> Result<String, String> {
+    let mut analytics = tracker.0.lock().map_err(|error| error.to_string())?;
+    analytics.screen(&name);
+    analytics.flush().map(|(status, body)| format!("{status} {body}"))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -34,7 +42,7 @@ pub fn run() {
             app.manage(Tracker(Mutex::new(analytics)));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![track])
+        .invoke_handler(tauri::generate_handler![track, screen])
         .run(tauri::generate_context!())
         .expect("the app could not start");
 }

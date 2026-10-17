@@ -56,6 +56,19 @@ final class Analytics {
         queue.append(["id": UUID().uuidString.lowercased(), "name": name, "ts": stamp.string(from: Date())])
     }
 
+    /// A screen as it appears, by the name you give it: never a person's name,
+    /// a note's title or an id. Call it from a view's onAppear.
+    func screen(_ name: String) {
+        let stamp = ISO8601DateFormatter()
+        stamp.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        queue.append([
+            "id": UUID().uuidString.lowercased(),
+            "name": "screen_view",
+            "ts": stamp.string(from: Date()),
+            "props": ["$screen": name],
+        ])
+    }
+
     /// Sends the queue as one batch. A network error or a 5xx is retried with
     /// the same body; a 4xx is not, since sending it again would not help.
     func flush() -> (status: Int, body: String)? {

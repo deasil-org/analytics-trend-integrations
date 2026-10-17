@@ -15,6 +15,7 @@ var endpoint = Environment.GetEnvironmentVariable("ANALYTICSTREND_ENDPOINT") ?? 
 // Kept beside the program here; a game keeps it in PlayerPrefs.
 var analytics = new Analytics(writeKey, endpoint, ".analyticstrend-id", "1.0.0");
 analytics.Track("app_opened");
+analytics.Screen("Notes");
 analytics.Track("note_created");
 var (status, body) = await analytics.FlushAsync();
 Console.WriteLine($"{status} {body}");
@@ -50,6 +51,17 @@ class Analytics(string writeKey, string endpoint, string idFile, string appVersi
     // Each event gets its own id when it happens, so a retry sends the same ids.
     public void Track(string name) =>
         queue.Add(new { id = Guid.NewGuid().ToString(), name, ts = DateTime.UtcNow.ToString("o") });
+
+    // A screen as it appears, by the name you give it: never a person's name,
+    // a note's title or an id. In Unity, call it when a scene loads.
+    public void Screen(string name) =>
+        queue.Add(new
+        {
+            id = Guid.NewGuid().ToString(),
+            name = "screen_view",
+            ts = DateTime.UtcNow.ToString("o"),
+            props = new Dictionary<string, string> { ["$screen"] = name },
+        });
 
     // Sends the queue as one batch. A network error or a 5xx is retried with
     // the same body; a 4xx is not, since sending it again would not help.

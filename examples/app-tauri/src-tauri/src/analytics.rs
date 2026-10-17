@@ -75,6 +75,17 @@ impl Analytics {
         }));
     }
 
+    /// A screen as it appears, by the name you give it: never a person's name,
+    /// a note's title or an id.
+    pub fn screen(&mut self, name: &str) {
+        self.queue.push(json!({
+            "id": Uuid::new_v4().to_string(),
+            "name": "screen_view",
+            "ts": Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true),
+            "props": { "$screen": name },
+        }));
+    }
+
     pub fn batch(&self) -> Value {
         json!({
             "writeKey": self.write_key,
@@ -145,6 +156,16 @@ mod tests {
         assert_eq!(batch["events"][0]["name"], "app_opened");
         assert_eq!(batch["os"], os());
         assert_eq!(batch["deviceType"], "desktop");
+    }
+
+    #[test]
+    fn sends_a_screen_view_with_its_screen() {
+        let dir = scratch("screen");
+        let mut analytics = analytics(&dir);
+        analytics.screen("Notes");
+        let batch = analytics.batch();
+        assert_eq!(batch["events"][0]["name"], "screen_view");
+        assert_eq!(batch["events"][0]["props"]["$screen"], "Notes");
     }
 
     #[test]

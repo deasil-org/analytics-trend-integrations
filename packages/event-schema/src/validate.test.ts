@@ -226,21 +226,23 @@ describe("validateEvent, reserved props", () => {
     // deliberate decision, not a surprise in production.
     //
     // No event carries every reserved prop: $from_path goes on page views
-    // only, and $host and $file on link events only (web SDK 0.5.0), so the
-    // worst case is checked per kind of event.
+    // only, $host and $file on link events only (web SDK 0.5.0), and $screen
+    // on an app's screen views only (0.7.0), so the worst case is checked
+    // per kind of event.
     const worstCase = (keys: readonly string[]) =>
       Object.fromEntries(
         keys.map((key) => [
           key,
           "x".repeat(
-            key.endsWith("path") ? LIMITS.MAX_CAPTURED_PATH_LENGTH : LIMITS.MAX_CAPTURED_VALUE_LENGTH,
+            key.endsWith("path") || key === "$screen" ? LIMITS.MAX_CAPTURED_PATH_LENGTH : LIMITS.MAX_CAPTURED_VALUE_LENGTH,
           ),
         ]),
       );
     const LINK_ONLY = new Set(["$host", "$file"]);
-    const pageView = RESERVED_PROPS.filter((key) => !LINK_ONLY.has(key));
-    const linkEvent = RESERVED_PROPS.filter((key) => key !== "$from_path");
-    for (const keys of [pageView, linkEvent]) {
+    const pageView = RESERVED_PROPS.filter((key) => !LINK_ONLY.has(key) && key !== "$screen");
+    const linkEvent = RESERVED_PROPS.filter((key) => key !== "$from_path" && key !== "$screen");
+    const screenView = ["$screen"];
+    for (const keys of [pageView, linkEvent, screenView]) {
       const bytes = new TextEncoder().encode(JSON.stringify(worstCase(keys))).length;
       expect(bytes).toBeLessThan(LIMITS.MAX_PROPS_BYTES / 2);
     }
@@ -250,6 +252,15 @@ describe("validateEvent, reserved props", () => {
 // An app says what it runs on, since a native app's User-Agent names no
 // browser or system the collector can read. Families from fixed lists only,
 // the same the collector works out for a browser.
+// An app says which screen it shows with a screen_view event (0.7.0).
+describe("an app's screen views", () => {
+  it("take $screen as a reserved property", () => {
+    expect(RESERVED_PROPS).toContain("$screen");
+    const result = validateEvent({ name: "screen_view", ts: new Date(NOW).toISOString(), props: { $screen: "Note editor" } }, NOW);
+    expect(result.ok).toBe(true);
+  });
+});
+
 describe("an app's declared system and device type", () => {
   it("are kept when they are on the list", () => {
     const result = validateBatch(validBatch({ client: "app", os: "Android", deviceType: "mobile" }), NOW);

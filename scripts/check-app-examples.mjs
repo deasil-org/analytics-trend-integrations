@@ -75,6 +75,12 @@ function problemWith(example, batches, earlier) {
   // An app says what it runs on; a server does not, since its system is not
   // the user's.
   if (example.server && (batch.os || batch.deviceType)) return "a server example must not declare an os or device type";
+  // An app shows screens and says so; a server has none.
+  const screens = batch.events.filter((event) => event.name === "screen_view");
+  if (example.server && screens.length > 0) return "a server example must not send a screen_view";
+  if (!example.server && !screens.some((event) => typeof event.props?.$screen === "string" && event.props.$screen !== "")) {
+    return "an app example must send a screen_view with a $screen";
+  }
   if (!example.server && (!APP_OS.includes(batch.os) || !DEVICE_TYPES.includes(batch.deviceType))) {
     return `declared os "${batch.os}" and device type "${batch.deviceType}", not one of the collector's families`;
   }

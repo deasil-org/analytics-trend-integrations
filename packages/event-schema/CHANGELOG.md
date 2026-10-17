@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+- **`$screen` is a reserved property**: the screen an app shows, as the app names it, sent with a `screen_view` event when the screen appears. Up to 128 characters, like a path.
+
 ## 0.6.0
 
 - **`page_engagement` and `$engaged_ms`.** The web SDK's signal of how long a page was visible, from 0.6.0. `$engaged_ms` is reserved. It is kept only on a `page_engagement` event, as a whole number from 1,000 to 1,800,000 (`LIMITS.MIN_ENGAGED_MS`, `LIMITS.MAX_ENGAGED_MS`); anywhere else it is dropped and the event kept. `ENGAGEMENT_EVENT` names the event.

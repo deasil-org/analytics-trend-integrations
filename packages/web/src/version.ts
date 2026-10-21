@@ -4,4 +4,4 @@
 // release separately: the extension went to 0.2.0 for a browser fix this
 // package never needed. version.test.ts fails if this and package.json ever
 // disagree.
-export const WEB_SDK_VERSION = "0.6.0";
+export const WEB_SDK_VERSION = "0.6.1";

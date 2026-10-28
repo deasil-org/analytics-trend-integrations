@@ -63,6 +63,8 @@ export const RESERVED_PROPS = [
   // Link events (web SDK 0.5.0): a hostname only, and a file name only.
   "$host",
   "$file",
+  // Form submissions (web SDK 0.7.0): the form's id or name attribute only.
+  "$form",
   // How long the page was visible, on page_engagement only (web SDK 0.6.0).
   "$engaged_ms",
   // Screen views (0.7.0): the screen an app shows, as the app names it, on a

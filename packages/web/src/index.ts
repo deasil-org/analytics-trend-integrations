@@ -11,6 +11,7 @@ import {
 } from "@analyticstrend/sdk-core";
 import { createCapture } from "./capture.ts";
 import { createEngagement } from "./engagement.ts";
+import { watchForms } from "./forms.ts";
 import { watchLinks } from "./links.ts";
 import { watchNavigation } from "./navigation.ts";
 import { WEB_SDK_VERSION } from "./version.ts";
@@ -269,6 +270,8 @@ export function init(options: {
   fileDownloads?: boolean;
   // An email or phone link, with no address or number.
   contactLinks?: boolean;
+  // A form submitted, by its id or name attribute, never what was typed.
+  formSubmissions?: boolean;
 }): WebClient {
   // Read once per page load: a changed setting reaches a site on its next
   // load anyway. Checked before anything else, so the inert path never
@@ -366,11 +369,17 @@ export function init(options: {
   return watchPage(captured, options);
 }
 
-// Page views on navigation, and link events, when asked for. Both go through
+// Page views on navigation, link events and form submissions, when asked for. Both go through
 // the client init returns, so each carries what auto-capture adds.
 function watchPage(
   client: WebClient,
-  options: { pageViews?: "history"; outboundLinks?: boolean; fileDownloads?: boolean; contactLinks?: boolean },
+  options: {
+    pageViews?: "history";
+    outboundLinks?: boolean;
+    fileDownloads?: boolean;
+    contactLinks?: boolean;
+    formSubmissions?: boolean;
+  },
 ): WebClient {
   if (options.pageViews === "history") {
     // A site may also count its own page views, as 0.4's guide told single-
@@ -401,5 +410,6 @@ function watchPage(
   if (kinds.outbound || kinds.downloads || kinds.contact) {
     watchLinks(kinds, (event) => void client.track(event.name, "props" in event ? event.props : undefined));
   }
+  if (options.formSubmissions === true) watchForms((event) => void client.track(event.name, event.props));
   return client;
 }

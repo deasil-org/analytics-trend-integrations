@@ -200,6 +200,11 @@ describe("validateEvent, reserved props", () => {
     expect(validateEvent({ name: "file_download", ts, props: { $file: "guide.pdf", $host: "cdn.example" } }, NOW).ok).toBe(true);
   });
 
+  it("accepts the form prop the web SDK sends", () => {
+    // Form submissions (web SDK 0.7.0): the form's id or name, never a field.
+    expect(validateEvent({ name: "form_submit", ts, props: { $form: "newsletter" } }, NOW).ok).toBe(true);
+  });
+
   it("rejects a $-prefixed prop that is not reserved", () => {
     // The namespace is ours. A customer prop here would be indistinguishable
     // from captured data by the time it reached the collector.
@@ -226,9 +231,9 @@ describe("validateEvent, reserved props", () => {
     // deliberate decision, not a surprise in production.
     //
     // No event carries every reserved prop: $from_path goes on page views
-    // only, $host and $file on link events only (web SDK 0.5.0), and $screen
-    // on an app's screen views only (0.7.0), so the worst case is checked
-    // per kind of event.
+    // only, $host and $file on link events only (web SDK 0.5.0), $form on form
+    // submissions only (web SDK 0.7.0), and $screen on an app's screen views
+    // only (0.7.0), so the worst case is checked per kind of event.
     const worstCase = (keys: readonly string[]) =>
       Object.fromEntries(
         keys.map((key) => [
@@ -238,11 +243,12 @@ describe("validateEvent, reserved props", () => {
           ),
         ]),
       );
-    const LINK_ONLY = new Set(["$host", "$file"]);
-    const pageView = RESERVED_PROPS.filter((key) => !LINK_ONLY.has(key) && key !== "$screen");
-    const linkEvent = RESERVED_PROPS.filter((key) => key !== "$from_path" && key !== "$screen");
+    const OWN = new Set(["$host", "$file", "$form", "$screen", "$from_path"]);
+    const pageView = [...RESERVED_PROPS.filter((key) => !OWN.has(key)), "$from_path"];
+    const linkEvent = [...RESERVED_PROPS.filter((key) => !OWN.has(key)), "$host", "$file"];
+    const formEvent = [...RESERVED_PROPS.filter((key) => !OWN.has(key)), "$form"];
     const screenView = ["$screen"];
-    for (const keys of [pageView, linkEvent, screenView]) {
+    for (const keys of [pageView, linkEvent, formEvent, screenView]) {
       const bytes = new TextEncoder().encode(JSON.stringify(worstCase(keys))).length;
       expect(bytes).toBeLessThan(LIMITS.MAX_PROPS_BYTES / 2);
     }

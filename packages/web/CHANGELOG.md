@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- **Form submissions.** `init({ formSubmissions: true })`, or `data-form-submissions="true"` on the script tag, sends `form_submit` when a form on the page is submitted, with `$form`: the form's `id`, or its `name` when it has no id. Never a field, a value or the address the form is sent to. A form the browser refuses as invalid is not counted, and the submit is never stopped or delayed. **Off by default**: it is a new kind of collection, so check that your privacy wording covers it before turning it on.
+- Depends on `@analyticstrend/event-schema` 0.8.0, which reserves `$form`.
+
 ## 0.6.1
 
 - **Installs from npm with the published `@analyticstrend/event-schema` 0.6.0.** 0.6.0 was published naming event-schema 0.7.0 before that version existed. No change to what the SDK does.

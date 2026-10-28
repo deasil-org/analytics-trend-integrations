@@ -62,6 +62,15 @@ describe("startFromScript", () => {
     expect(start).toHaveBeenLastCalledWith({ writeKey: "wk_123", pageViews: "history" });
   });
 
+  it("turns on form submissions with their own attribute, and only with \"true\"", () => {
+    const { start } = fakeStart();
+    startFromScript(tag({ writeKey: "wk_123", formSubmissions: "true" }), {} as Window, start);
+    expect(start).toHaveBeenLastCalledWith({ writeKey: "wk_123", pageViews: "history", formSubmissions: true });
+
+    startFromScript(tag({ writeKey: "wk_123", formSubmissions: "1" }), {} as Window, start);
+    expect(start).toHaveBeenLastCalledWith({ writeKey: "wk_123", pageViews: "history" });
+  });
+
   it("sends no page view when told not to", () => {
     const { start, track } = fakeStart();
     startFromScript(tag({ writeKey: "wk_123", pageViews: "false" }), {} as Window, start);

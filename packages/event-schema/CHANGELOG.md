@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- **`$form` is a reserved property**: the id or name attribute of a form the web SDK saw submitted, on a `form_submit` event (web SDK 0.7.0). Up to 64 characters, like every captured value.
+
 ## 0.7.0
 
 - **`$screen` is a reserved property**: the screen an app shows, as the app names it, sent with a `screen_view` event when the screen appears. Up to 128 characters, like a path.

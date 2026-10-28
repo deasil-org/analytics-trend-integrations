@@ -45,6 +45,7 @@ export function startFromScript(
     ...(data.outboundLinks === "true" ? { outboundLinks: true } : {}),
     ...(data.fileDownloads === "true" ? { fileDownloads: true } : {}),
     ...(data.contactLinks === "true" ? { contactLinks: true } : {}),
+    ...(data.formSubmissions === "true" ? { formSubmissions: true } : {}),
     ...(data.endpoint ? { endpoint: data.endpoint } : {}),
     ...(data.autoCapture === "false" ? { autoCapture: false } : {}),
     ...(data.engagement === "false" ? { engagement: false } : {}),

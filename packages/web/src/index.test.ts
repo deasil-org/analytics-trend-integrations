@@ -590,6 +590,39 @@ describe("init", () => {
     expect(await sentNames(listeners, fetchMock)).toEqual(["outbound_click /"]);
   });
 
+  // Form submissions (0.7.0), off unless asked for, like link events.
+  function stubDocumentSubmits(doc: object) {
+    const listeners = new Map<string, (event: unknown) => void>();
+    vi.stubGlobal("document", {
+      ...doc,
+      location: { hostname: "shop.example", href: "https://shop.example/" },
+      addEventListener: (type: string, listener: (event: unknown) => void) => void listeners.set(type, listener),
+    });
+    const newsletter = { tagName: "FORM", getAttribute: (name: string) => (name === "id" ? "newsletter" : null) };
+    return { submit: () => listeners.get("submit")?.({ type: "submit", target: newsletter }), listeners };
+  }
+
+  it("sends a form submission, with auto-capture's props, when asked to", async () => {
+    const { listeners, fetchMock, doc } = stubPage(fakeStorage());
+    const { submit } = stubDocumentSubmits(doc);
+
+    init({ writeKey: WRITE_KEY, formSubmissions: true });
+    await settle();
+    submit();
+
+    expect(await sentNames(listeners, fetchMock)).toEqual(["form_submit /"]);
+  });
+
+  it("listens for no submissions unless asked to", async () => {
+    const { doc } = stubPage(fakeStorage());
+    const { listeners } = stubDocumentSubmits(doc);
+
+    init({ writeKey: WRITE_KEY });
+    await settle();
+
+    expect(listeners.has("submit")).toBe(false);
+  });
+
   it("listens for no clicks unless a link option is on", async () => {
     const { listeners, fetchMock, doc } = stubPage(fakeStorage());
     const click = stubDocumentClicks(doc);

@@ -259,8 +259,8 @@ export function init(options: {
   // signal appeared. Ignored when the signal is not respected.
   clearDataOnGlobalPrivacyControl?: boolean;
   // Off by default: "history" sends a page view now and one each time the
-  // path changes (in-app navigation included). A site that sends its own on
-  // route change would count every page twice with it on.
+  // path changes (in-app navigation included). A site that also sends its own
+  // on route change is not counted twice: the second for the same page is dropped.
   pageViews?: "history";
   // Each off by default: a site turning one on starts a
   // new kind of collection, which its own privacy wording must cover first.

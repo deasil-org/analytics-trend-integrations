@@ -19,9 +19,20 @@ analytics.track("page_view");
 `init` sendet, was von einem früheren Besuch übrig ist, und leert die Warteschlange erneut, wenn
 die Seite verlassen wird.
 
-**Single-Page-Apps brauchen eine Zeile mehr.** `init` läuft einmal pro Laden eines Dokuments,
-daher löst clientseitige Navigation nichts aus, und Ihre Seitenaufrufe zählen nur das erste Laden.
-Erfassen Sie Routenwechsel selbst.
+**Single-Page-Apps brauchen eine Zeile mehr.** `init` läuft einmal pro Laden eines Dokuments
+und zählt für sich allein daher nur das erste Laden; clientseitige Navigation löst nichts aus.
+Übergeben Sie `pageViews: "history"`, um sofort einen Seitenaufruf zu senden und bei jedem
+Pfadwechsel einen weiteren, einschließlich der Navigation innerhalb der App und der Zurück- und
+Vorwärts-Schaltflächen:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", pageViews: "history" });
+```
+
+Nur der Pfad zählt: Ein neuer Query-String oder ein neues Fragment allein ist dieselbe Seite.
+Sendet Ihre App bei jedem Routenwechsel bereits ihren eigenen `page_view`, wird ein Seitenaufruf
+für die gerade gezählte Seite nicht erneut gesendet; mit dieser Option wird eine Seite also nicht
+doppelt gezählt. Das Script-Tag zählt Seitenaufrufe standardmäßig auf diese Weise.
 
 ## Was erfasst wird
 

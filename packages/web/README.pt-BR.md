@@ -20,8 +20,19 @@ O `init` envia o que sobrou de uma visita anterior e esvazia a fila de novo quan
 página.
 
 **Aplicativos de página única precisam de mais uma linha.** O `init` roda uma vez por carregamento
-de documento, então a navegação no lado do cliente não dispara nada e as suas visualizações de
-página contam só os primeiros carregamentos. Rastreie você mesmo as mudanças de rota.
+de documento, então sozinho ele conta só os primeiros carregamentos, e a navegação no lado do
+cliente não dispara nada. Passe `pageViews: "history"` para enviar uma visualização de página na
+hora e outra a cada mudança de caminho, incluindo a navegação dentro do aplicativo e os botões de
+voltar e avançar:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", pageViews: "history" });
+```
+
+Só o caminho conta: uma nova query string ou um novo fragmento, sozinhos, são a mesma página. Se o
+seu aplicativo já envia o próprio `page_view` a cada mudança de rota, uma visualização de página
+da página que acabou de ser contada não é enviada de novo, então ativar essa opção não conta uma
+página duas vezes. A tag script conta as visualizações de página assim por padrão.
 
 ## O que é capturado
 

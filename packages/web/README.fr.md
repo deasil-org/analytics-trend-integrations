@@ -21,8 +21,20 @@ analytics.track("page_view");
 page est quittée.
 
 **Les applications monopages ont besoin d’une ligne de plus.** `init` s’exécute une fois par
-chargement de document : la navigation côté client ne déclenche donc rien, et vos pages vues ne
-comptent que les premiers chargements. Suivez vous-même les changements de route.
+chargement de document : seul, il ne compte donc que les premiers chargements, et la navigation
+côté client ne déclenche rien. Passez `pageViews: "history"` pour envoyer une page vue tout de
+suite, puis une autre à chaque changement de chemin, navigation dans l’application et boutons
+précédent et suivant compris :
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", pageViews: "history" });
+```
+
+Seul le chemin compte : une nouvelle chaîne de requête ou un nouveau fragment, à eux seuls,
+désignent la même page. Si votre application envoie déjà son propre `page_view` à chaque
+changement de route, une page vue pour la page tout juste comptée n’est pas envoyée de nouveau :
+activer cette option ne compte donc pas une page deux fois. La balise script compte les pages vues
+de cette façon par défaut.
 
 ## Ce qui est capturé
 

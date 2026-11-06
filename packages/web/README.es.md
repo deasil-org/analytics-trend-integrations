@@ -20,8 +20,19 @@ analytics.track("page_view");
 abandona la página.
 
 **Las aplicaciones de una sola página necesitan una línea más.** `init` se ejecuta una vez por
-carga de documento, así que la navegación del lado del cliente no dispara nada y tus vistas de
-página solo cuentan las primeras cargas. Registra tú mismo los cambios de ruta.
+carga de documento, así que, sin más, solo cuenta las primeras cargas y la navegación del lado del
+cliente no dispara nada. Pasa `pageViews: "history"` para enviar una vista de página en ese momento
+y otra cada vez que cambia la ruta, incluidas la navegación dentro de la aplicación y los botones
+de atrás y adelante:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", pageViews: "history" });
+```
+
+Solo cuenta la ruta: una nueva cadena de consulta o un nuevo fragmento, por sí solos, son la misma
+página. Si tu aplicación ya envía su propio `page_view` en cada cambio de ruta, una vista de página
+de la página recién contada no se vuelve a enviar, así que activarlo no cuenta una página dos
+veces. La etiqueta script cuenta las vistas de página así por defecto.
 
 ## Qué se captura
 

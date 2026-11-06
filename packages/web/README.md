@@ -19,9 +19,19 @@ analytics.track("page_view");
 `init` sends anything left over from a previous visit, and flushes again as the page is
 leaving.
 
-**Single-page applications need one more line.** `init` runs once per document load, so
-client-side navigation fires nothing and your page views count first loads only. Track route
-changes yourself.
+**Single-page applications need one more line.** `init` runs once per document load, so on its
+own it counts first loads only, and client-side navigation fires nothing. Pass
+`pageViews: "history"` to send a page view now and another each time the path changes, in-app
+navigation and the back and forward buttons included:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", pageViews: "history" });
+```
+
+Only the path counts: a new query string or hash alone is the same page. If your app already
+sends its own `page_view` on each route change, a page view for the page just counted is not
+sent again, so turning this on does not count a page twice. The script tag counts page views
+this way by default.
 
 ## What is captured
 

@@ -3,6 +3,7 @@
 ## 0.7.1
 
 - **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.
+- **The README no longer tells a single-page app to count its own route changes.** It shows `init({ pageViews: "history" })`, which sends a page view when `init` runs and on every path change, and says that a page view the app also sends for the page just counted is not sent twice.
 
 ## 0.7.0
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.
+
 ## 0.8.0
 
 - **`$form` is a reserved property**: the id or name attribute of a form the web SDK saw submitted, on a `form_submit` event (web SDK 0.7.0). Up to 64 characters, like every captured value.

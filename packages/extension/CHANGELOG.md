@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+- **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.
+
 ## 0.6.0
 
 - **The version is sent for you.** `initBackground` sends the manifest's `version` as `appVersion` when you give none, so the Versions report works with no code change. An `appVersion` you pass still wins.

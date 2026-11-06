@@ -1,7 +1,24 @@
 {
   "name": "@analyticstrend/wxt-analytics",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AnalyticsTrend for WXT's analytics module: durable delivery, Firefox consent and uninstall tracking, and nothing about the pages people visit.",
+  "keywords": [
+    "wxt",
+    "analytics",
+    "product-analytics",
+    "browser-extension",
+    "analytique",
+    "analyse produit",
+    "extension de navigateur",
+    "analítica",
+    "analítica de producto",
+    "extensión de navegador",
+    "análise",
+    "análise de produto",
+    "extensão de navegador",
+    "Produktanalyse",
+    "Browsererweiterung"
+  ],
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -32,7 +49,7 @@
     "url": "git+https://github.com/deasil-org/analytics-trend-integrations.git",
     "directory": "packages/wxt-analytics"
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": ["dist", "README.md", "README.fr.md", "README.es.md", "README.pt-BR.md", "README.de.md", "LICENSE"],
   "publishConfig": {
     "access": "public",
     "main": "./dist/index.js",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.
+
 ## 0.2.0
 
 - **`locationAllowed`.** A client can be told whether the collector may work a location out of its requests. It is asked at every send, because that is when the collector reads the address; when it answers false, or throws, each batch says `location: false`. Omitted, nothing changes. The extension SDK answers it from Firefox's `locationInfo` permission.

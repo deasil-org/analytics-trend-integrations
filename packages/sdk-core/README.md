@@ -1,3 +1,5 @@
+**English** · [Français](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/sdk-core/README.fr.md) · [Español](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/sdk-core/README.es.md) · [Português](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/sdk-core/README.pt-BR.md) · [Deutsch](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/sdk-core/README.de.md)
+
 # @analyticstrend/sdk-core
 
 The queueing, batching and retry behaviour shared by AnalyticsTrend's browser SDKs, kept

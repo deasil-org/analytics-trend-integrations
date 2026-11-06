@@ -1,3 +1,5 @@
+**English** · [Français](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/extension/README.fr.md) · [Español](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/extension/README.es.md) · [Português](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/extension/README.pt-BR.md) · [Deutsch](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/extension/README.de.md)
+
 # @analyticstrend/extension
 
 Product analytics for Chromium and Firefox extensions. No remote code, so it clears

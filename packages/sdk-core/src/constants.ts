@@ -20,7 +20,7 @@
 // now reports its own version as clientVersion, because they release
 // separately. Kept, and kept accurate, because it is part of this package's
 // published API. version.test.ts pins it to package.json.
-export const SDK_VERSION = "0.2.0";
+export const SDK_VERSION = "0.2.1";
 
 // Where batches go when an integrator does not name an endpoint.
 export const DEFAULT_ENDPOINT = "https://analyticstrend.com";

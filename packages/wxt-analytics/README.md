@@ -1,3 +1,5 @@
+**English** · [Français](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/wxt-analytics/README.fr.md) · [Español](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/wxt-analytics/README.es.md) · [Português](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/wxt-analytics/README.pt-BR.md) · [Deutsch](https://github.com/deasil-org/analytics-trend-integrations/blob/main/packages/wxt-analytics/README.de.md)
+
 # @analyticstrend/wxt-analytics
 
 AnalyticsTrend as a provider for [WXT](https://wxt.dev)'s analytics module. Events go through

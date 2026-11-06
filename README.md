@@ -61,6 +61,15 @@ pnpm mock-collector
 `pnpm check:app-examples` runs every example against it, twice, in Docker where its
 toolchain is not installed. The guide is [Install in an app](https://analyticstrend.com/docs/guide/install-app).
 
+## Translated READMEs
+
+Each package's `README.md` is the English one npm shows. Beside it are `README.fr.md`,
+`README.es.md`, `README.pt-BR.md` and `README.de.md`, and every one starts with a line linking
+to the other four. A change to a `README.md` ships with the same change in its four
+translations, and then `pnpm i18n:lock` records the English they were made from. `pnpm test`
+fails when a translation is missing, or when an English README has changed since the lock was
+last written.
+
 ## Releasing
 
 Raise the version in the package's `package.json` and add a line to its `CHANGELOG.md`,

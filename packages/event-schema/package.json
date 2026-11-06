@@ -1,6 +1,6 @@
 {
   "name": "@analyticstrend/event-schema",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,6 +22,19 @@
     "vitest": "^5.0.0"
   },
   "description": "Wire contract and validation shared by the AnalyticsTrend collector and SDKs. Dependency-free by design.",
+  "keywords": [
+    "analytics",
+    "product-analytics",
+    "event-schema",
+    "validation",
+    "analytique",
+    "analyse produit",
+    "analítica",
+    "analítica de producto",
+    "análise",
+    "análise de produto",
+    "Produktanalyse"
+  ],
   "license": "MIT",
   "homepage": "https://analyticstrend.com",
   "bugs": "https://github.com/deasil-org/analytics-trend-integrations/issues",
@@ -33,6 +46,10 @@
   "files": [
     "dist",
     "README.md",
+    "README.fr.md",
+    "README.es.md",
+    "README.pt-BR.md",
+    "README.de.md",
     "CHANGELOG.md",
     "LICENSE"
   ],

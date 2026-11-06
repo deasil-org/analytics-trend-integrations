@@ -1,6 +1,6 @@
 {
   "name": "@analyticstrend/sdk-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,6 +25,20 @@
     "vitest": "^5.0.0"
   },
   "description": "Queue, batching and retry shared by the AnalyticsTrend browser SDKs. Platform-agnostic.",
+  "keywords": [
+    "analytics",
+    "product-analytics",
+    "sdk",
+    "batching",
+    "retry",
+    "analytique",
+    "analyse produit",
+    "analítica",
+    "analítica de producto",
+    "análise",
+    "análise de produto",
+    "Produktanalyse"
+  ],
   "license": "MIT",
   "homepage": "https://analyticstrend.com",
   "bugs": "https://github.com/deasil-org/analytics-trend-integrations/issues",
@@ -36,6 +50,10 @@
   "files": [
     "dist",
     "README.md",
+    "README.fr.md",
+    "README.es.md",
+    "README.pt-BR.md",
+    "README.de.md",
     "CHANGELOG.md",
     "LICENSE"
   ],

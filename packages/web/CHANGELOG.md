@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.
+
 ## 0.7.0
 
 - **Form submissions.** `init({ formSubmissions: true })`, or `data-form-submissions="true"` on the script tag, sends `form_submit` when a form on the page is submitted, with `$form`: the form's `id`, or its `name` when it has no id. Never a field, a value or the address the form is sent to. A form the browser refuses as invalid is not counted, and the submit is never stopped or delayed. **Off by default**: it is a new kind of collection, so check that your privacy wording covers it before turning it on.

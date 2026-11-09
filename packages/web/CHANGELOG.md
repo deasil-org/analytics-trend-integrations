@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+- **Options from a page global.** The script tag also reads its options from `window.analyticstrendConfig`, for an install that can't set attributes on the tag it adds, such as Google Tag Manager. The keys are the tag's attributes in camelCase with the same string values (`writeKey`, `pageViews`, `outboundLinks` and the rest), and an attribute on the tag wins over the same key. The script also starts when it was injected after the page parsed, as long as the global gives a write key.
+- **Events sent before the script loads.** Events pushed onto `window.analyticstrendQueue` as `[name, props]` before the script loads are sent once it starts, once each, and a push after that is sent at once. The queue stays an array.
+- **One client per write key.** A second copy of the script with the same write key on a page starts nothing and leaves the first client as `window.analyticstrend`, so a site with the tag by hand that also installs a plugin is not counted twice.
+
 ## 0.7.1
 
 - **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.

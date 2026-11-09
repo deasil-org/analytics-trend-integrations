@@ -69,4 +69,24 @@ Pour tout désactiver :
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## La balise script, sans attributs
+
+Depuis la 0.8.0, la balise script (`dist/script.js`) lit aussi ses options dans
+`window.analyticstrendConfig`, pour une installation qui ne peut pas mettre d’attributs sur la
+balise, comme Google Tag Manager. Les clés sont les attributs de la balise en camelCase, avec les
+mêmes valeurs en texte, et un attribut posé sur la balise l’emporte sur la même clé ici.
+
+```html
+<script>
+  window.analyticstrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
+  window.analyticstrendQueue = window.analyticstrendQueue || [];
+  window.analyticstrendQueue.push(["signup", { plan: "pro" }]);
+</script>
+```
+
+Les événements ajoutés à `window.analyticstrendQueue` avant le chargement du script sont envoyés
+dès qu’il démarre, et un ajout après cela est envoyé aussitôt. Une deuxième copie du script avec la
+même clé d’écriture ne démarre rien : une page qui porte la balise deux fois n’est pas comptée deux
+fois.
+
 Documentation complète : <https://analyticstrend.com/docs/fr/>

@@ -19,5 +19,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'ANALYTICSTREND_VERSION', '1.0.0' );
 define( 'ANALYTICSTREND_FILE', __FILE__ );
 
+require_once __DIR__ . '/includes/links.php';
+require_once __DIR__ . '/includes/privacy.php';
 require_once __DIR__ . '/includes/settings.php';
 require_once __DIR__ . '/includes/tag.php';

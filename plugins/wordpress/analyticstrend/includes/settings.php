@@ -113,6 +113,11 @@ function analyticstrend_settings_page(): void {
 			<p><?php esc_html_e( 'The script ships inside this plugin and loads from your own site. It sets no cookies.', 'analyticstrend' ); ?></p>
 			<?php submit_button(); ?>
 		</form>
+		<p>
+			<a href="<?php echo esc_url( analyticstrend_docs_url() ); ?>"><?php esc_html_e( 'How to install, leave yourself out and check it works', 'analyticstrend' ); ?></a>
+			·
+			<a href="https://analyticstrend.com/projects"><?php esc_html_e( 'Your projects in AnalyticsTrend', 'analyticstrend' ); ?></a>
+		</p>
 	</div>
 	<?php
 }

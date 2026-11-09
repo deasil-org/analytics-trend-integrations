@@ -4,10 +4,12 @@
   "type": "module",
   "description": "The AnalyticsTrend WordPress plugin, and the scripts that build, test and release it.",
   "scripts": {
-    "build": "node scripts/copy-script.mjs",
-    "test": "node scripts/copy-script.mjs && node --test --test-concurrency=1 \"test/*.test.mjs\""
+    "build": "node scripts/copy-script.mjs && node scripts/build-l10n.mjs",
+    "test": "node scripts/copy-script.mjs && node scripts/build-l10n.mjs && node --test --test-concurrency=1 \"test/*.test.mjs\"",
+    "zip": "node scripts/copy-script.mjs && node scripts/zip.mjs"
   },
   "devDependencies": {
-    "@wp-playground/cli": "^3.1.62"
+    "@wp-playground/cli": "^3.1.62",
+    "fflate": "0.8.2"
   }
 }

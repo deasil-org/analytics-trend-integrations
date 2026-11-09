@@ -2,6 +2,7 @@ packages:
   - packages/*
   - templates/*
   - examples/*
+  - plugins/*
 
 # The template names the provider's published version, so a copy of it installs
 # from npm on its own. Inside this repository that range is met by the provider
@@ -14,6 +15,11 @@ allowBuilds:
   # A web-ext dependency whose install script only polyfills child_process for
   # Node versions older than this repository supports.
   spawn-sync: false
+  # WordPress Playground's file-locking helper, for the WordPress plugin's
+  # tests. Its install script checks for a shipped binary and otherwise
+  # compiles one with node-gyp. The package ships its binaries, which it loads
+  # at run time, so the script adds nothing.
+  fs-ext-extra-prebuilt: false
   # Install scripts Plasmo's bundler needs.
   "@parcel/watcher": true
   "@swc/core": true

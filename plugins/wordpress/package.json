@@ -1,0 +1,13 @@
+{
+  "name": "analyticstrend-wordpress",
+  "private": true,
+  "type": "module",
+  "description": "The AnalyticsTrend WordPress plugin, and the scripts that build, test and release it.",
+  "scripts": {
+    "build": "node scripts/copy-script.mjs",
+    "test": "node scripts/copy-script.mjs && node --test --test-concurrency=1 \"test/*.test.mjs\""
+  },
+  "devDependencies": {
+    "@wp-playground/cli": "^3.1.62"
+  }
+}

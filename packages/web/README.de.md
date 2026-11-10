@@ -86,4 +86,18 @@ gesendet, sobald es startet, und ein späteres `push` wird sofort gesendet. Eine
 Scripts mit demselben Schreibschlüssel startet nichts, sodass eine Seite mit dem Tag zweimal nicht doppelt
 gezählt wird.
 
+## Automatisierte Browser
+
+Ein Browser, der per Automatisierung gesteuert wird, etwa mit Puppeteer, Playwright oder
+Selenium, sendet nichts und speichert nichts: Dort ist `navigator.webdriver` true, und ein
+solcher Browser ist weit öfter ein Crawler als ein Mensch. Das Kennzeichen wird im Browser gelesen
+und nie gesendet. Wenn Ihre eigenen End-to-End-Tests die Ereignisse prüfen, die Ihre Website
+sendet, zählen Sie sie trotzdem:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", countAutomatedBrowsers: true });
+```
+
+Am Script-Tag ist das `data-count-automated="true"`.
+
 Vollständige Dokumentation: <https://analyticstrend.com/docs/de/>

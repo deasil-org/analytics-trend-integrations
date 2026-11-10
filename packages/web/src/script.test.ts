@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { WebClient } from "./index.ts";
-import { startFromScript } from "./script.ts";
+import { startFromScript, type ScriptConfig } from "./script.ts";
 
 // The script tag reads everything from its own data attributes and hands it
 // to init. init itself is covered by index.test.ts; what needs pinning here is
@@ -88,6 +88,7 @@ describe("startFromScript", () => {
         autoCapture: "false",
         respectGpc: "false",
         clearOnGpc: "true",
+        countAutomated: "true",
       }),
       {} as Window,
       start,
@@ -100,7 +101,14 @@ describe("startFromScript", () => {
       autoCapture: false,
       respectGlobalPrivacyControl: false,
       clearDataOnGlobalPrivacyControl: true,
+      countAutomatedBrowsers: true,
     });
+  });
+
+  it("counts automated browsers only with data-count-automated=\"true\"", () => {
+    const { start } = fakeStart();
+    startFromScript(tag({ writeKey: "wk_123", countAutomated: "1" }), {} as Window, start);
+    expect(start).toHaveBeenLastCalledWith({ writeKey: "wk_123", pageViews: "history" });
   });
 
   it("turns the engagement signal off with data-engagement=\"false\", and leaves it on otherwise", () => {
@@ -142,6 +150,14 @@ describe("startFromScript", () => {
     const win = { analyticstrendConfig: { writeKey: "wk_1", outboundLinks: "true" } } as unknown as Window;
     startFromScript(tag({}), win, start);
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_1", pageViews: "history", outboundLinks: true });
+  });
+
+  // Typed rather than cast, so a key the type does not list fails to compile.
+  it("counts automated browsers from the config's countAutomated", () => {
+    const { start } = fakeStart();
+    const analyticstrendConfig: ScriptConfig = { writeKey: "wk_1", countAutomated: "true" };
+    startFromScript(tag({}), { analyticstrendConfig } as Window, start);
+    expect(start).toHaveBeenCalledWith({ writeKey: "wk_1", pageViews: "history", countAutomatedBrowsers: true });
   });
 
   it("lets the tag's attributes win over the config, key by key", () => {

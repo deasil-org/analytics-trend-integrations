@@ -18,7 +18,8 @@ export type ScriptConfig = Partial<
     | "autoCapture"
     | "engagement"
     | "respectGpc"
-    | "clearOnGpc",
+    | "clearOnGpc"
+    | "countAutomated",
     string
   >
 >;
@@ -91,6 +92,7 @@ export function startFromScript(
     ...(data.engagement === "false" ? { engagement: false } : {}),
     ...(data.respectGpc === "false" ? { respectGlobalPrivacyControl: false } : {}),
     ...(data.clearOnGpc === "true" ? { clearDataOnGlobalPrivacyControl: true } : {}),
+    ...(data.countAutomated === "true" ? { countAutomatedBrowsers: true } : {}),
   });
   win.analyticstrend = client;
   win.analyticstrendStartedKey = data.writeKey;

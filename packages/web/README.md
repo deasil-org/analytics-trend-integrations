@@ -64,4 +64,17 @@ To turn all of it off:
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## Automated browsers
+
+A browser driven by automation, such as Puppeteer, Playwright or Selenium, sends nothing and
+stores nothing: `navigator.webdriver` is true there, and such a browser is a crawler far more
+often than a person. The flag is read in the browser and never sent. If your own end-to-end
+tests check the events your site sends, count them anyway:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", countAutomatedBrowsers: true });
+```
+
+On the script tag, that is `data-count-automated="true"`.
+
 Full documentation: <https://analyticstrend.com/docs>

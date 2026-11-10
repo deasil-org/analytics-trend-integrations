@@ -51,6 +51,7 @@ export function startFromScript(
     ...(data.engagement === "false" ? { engagement: false } : {}),
     ...(data.respectGpc === "false" ? { respectGlobalPrivacyControl: false } : {}),
     ...(data.clearOnGpc === "true" ? { clearDataOnGlobalPrivacyControl: true } : {}),
+    ...(data.countAutomated === "true" ? { countAutomatedBrowsers: true } : {}),
   });
   win.analyticstrend = client;
   if (pageViews === "load") void client.track("page_view");

@@ -88,6 +88,7 @@ describe("startFromScript", () => {
         autoCapture: "false",
         respectGpc: "false",
         clearOnGpc: "true",
+        countAutomated: "true",
       }),
       {} as Window,
       start,
@@ -100,7 +101,14 @@ describe("startFromScript", () => {
       autoCapture: false,
       respectGlobalPrivacyControl: false,
       clearDataOnGlobalPrivacyControl: true,
+      countAutomatedBrowsers: true,
     });
+  });
+
+  it("counts automated browsers only with data-count-automated=\"true\"", () => {
+    const { start } = fakeStart();
+    startFromScript(tag({ writeKey: "wk_123", countAutomated: "1" }), {} as Window, start);
+    expect(start).toHaveBeenLastCalledWith({ writeKey: "wk_123", pageViews: "history" });
   });
 
   it("turns the engagement signal off with data-engagement=\"false\", and leaves it on otherwise", () => {

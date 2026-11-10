@@ -64,6 +64,25 @@ To turn all of it off:
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## The script tag, without attributes
+
+From 0.8.0 the script tag (`dist/script.js`) also reads its options from
+`window.analyticsTrendConfig`, for an install that can't set attributes on the tag, such as
+Google Tag Manager. The keys are the tag's attributes in camelCase, with the same string values,
+and an attribute on the tag wins over the same key here.
+
+```html
+<script>
+  window.analyticsTrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
+  window.analyticsTrendQueue = window.analyticsTrendQueue || [];
+  window.analyticsTrendQueue.push(["signup", { plan: "pro" }]);
+</script>
+```
+
+Events pushed onto `window.analyticsTrendQueue` before the script loads are sent once it starts,
+and a push after that is sent at once. A second copy of the script with the same write key starts
+nothing, so a page with the tag on it twice is not counted twice.
+
 ## Automated browsers
 
 A browser driven by automation, such as Puppeteer, Playwright or Selenium, sends nothing and

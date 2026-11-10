@@ -1,0 +1,22 @@
+{
+  "Product analytics for your site, with no cookies and no personal data. Paste your write key and every page is counted.": "Produktanalyse für Ihre Website, ohne Cookies und ohne personenbezogene Daten. Fügen Sie Ihren Schreibschlüssel ein, und jede Seite wird gezählt.",
+  "Settings": "Einstellungen",
+  "Docs": "Dokumentation",
+  "This site counts its visits with AnalyticsTrend. It sets no cookies.": "Diese Website zählt ihre Besuche mit AnalyticsTrend. Sie setzt keine Cookies.",
+  "Your browser keeps a random identifier for this site in its own storage. It is not made from anything about you or your device, and it can’t be matched with any other site.": "Ihr Browser speichert für diese Website eine zufällige Kennung in seinem eigenen Speicher. Sie wird aus nichts über Sie oder Ihr Gerät gebildet und lässt sich mit keiner anderen Website verknüpfen.",
+  "With each page you view, AnalyticsTrend receives the page’s path, the site that linked you here (its name only), any campaign tags on the link you arrived from, and how long the page was visible. From your browser’s request it reads your country (in some countries your region), your browser, operating system and kind of device, and the language your browser asks for. Your IP address is used to find the country and is then discarded, never stored.": "Mit jeder Seite, die Sie aufrufen, erhält AnalyticsTrend den Pfad der Seite, die Website, von der Sie gekommen sind (nur ihren Namen), etwaige Kampagnenparameter des Links, über den Sie gekommen sind, und wie lange die Seite sichtbar war. Aus der Anfrage Ihres Browsers liest es Ihr Land (in einigen Ländern Ihre Region), Ihren Browser, Ihr Betriebssystem und Ihre Geräteart sowie die Sprache, die Ihr Browser anfragt. Ihre IP-Adresse wird verwendet, um das Land zu bestimmen, und danach verworfen, nie gespeichert.",
+  "If your browser sends Global Privacy Control, you are not counted.": "Wenn Ihr Browser Global Privacy Control sendet, werden Sie nicht gezählt.",
+  "It also receives the site’s name when you follow a link to another site, and the file’s name when you download one.": "Es erhält außerdem den Namen der Website, wenn Sie einem Link zu einer anderen Website folgen, und den Dateinamen, wenn Sie eine Datei herunterladen.",
+  "AnalyticsTrend is run by Deasil. What it collects is listed in %1$s, and its privacy policy is at %2$s.": "AnalyticsTrend ist ein Dienst von Deasil. Was es erfasst, steht in %1$s, und seine Datenschutzerklärung finden Sie unter %2$s.",
+  "its documentation": "seiner Dokumentation",
+  "That isn’t a website’s write key, so the key already saved was kept. Copy it from your project’s setup page in AnalyticsTrend: it starts with wk_ followed by 32 letters and numbers.": "Das ist kein Schreibschlüssel einer Website, deshalb wurde der bereits gespeicherte Schlüssel behalten. Kopieren Sie ihn von der Einrichtungsseite Ihres Projekts in AnalyticsTrend: Er beginnt mit wk_, gefolgt von 32 Buchstaben und Ziffern.",
+  "Write key": "Schreibschlüssel",
+  "Paste the write key from your project’s setup page in AnalyticsTrend.": "Fügen Sie den Schreibschlüssel von der Einrichtungsseite Ihres Projekts in AnalyticsTrend ein.",
+  "Who is counted": "Wer gezählt wird",
+  "Don’t count logged-in administrators and editors": "Angemeldete Administratoren und Redakteure nicht zählen",
+  "Links": "Links",
+  "Count clicks on links to other sites, and file downloads": "Klicks auf Links zu anderen Websites und Datei-Downloads zählen",
+  "The script ships inside this plugin and loads from your own site. It sets no cookies.": "Das Script ist Teil dieses Plugins und wird von Ihrer eigenen Website geladen. Es setzt keine Cookies.",
+  "How to install, leave yourself out and check it works": "Installieren, sich selbst ausnehmen und prüfen, ob es funktioniert",
+  "Your projects in AnalyticsTrend": "Ihre Projekte in AnalyticsTrend"
+}

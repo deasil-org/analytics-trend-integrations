@@ -66,6 +66,26 @@ So schalten Sie alles ab:
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## Das Script-Tag ohne Attribute
+
+Ab 0.8.0 liest das Script-Tag (`dist/script.js`) seine Optionen auch aus
+`window.analyticsTrendConfig`, für eine Installation, die am Tag keine Attribute setzen kann, wie
+Google Tag Manager. Die Schlüssel sind die Attribute des Tags in camelCase, mit denselben
+Textwerten, und ein Attribut am Tag hat Vorrang vor demselben Schlüssel hier.
+
+```html
+<script>
+  window.analyticsTrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
+  window.analyticsTrendQueue = window.analyticsTrendQueue || [];
+  window.analyticsTrendQueue.push(["signup", { plan: "pro" }]);
+</script>
+```
+
+Ereignisse, die vor dem Laden des Scripts in `window.analyticsTrendQueue` gelegt werden, werden
+gesendet, sobald es startet, und ein späteres `push` wird sofort gesendet. Eine zweite Kopie des
+Scripts mit demselben Schreibschlüssel startet nichts, sodass eine Seite mit dem Tag zweimal nicht doppelt
+gezählt wird.
+
 ## Automatisierte Browser
 
 Ein Browser, der per Automatisierung gesteuert wird, etwa mit Puppeteer, Playwright oder

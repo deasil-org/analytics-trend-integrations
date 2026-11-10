@@ -69,4 +69,18 @@ Pour tout désactiver :
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## Navigateurs automatisés
+
+Un navigateur piloté par un outil d’automatisation, comme Puppeteer, Playwright ou Selenium,
+n’envoie rien et ne stocke rien : `navigator.webdriver` y vaut true, et un tel navigateur est
+bien plus souvent un robot d’exploration qu’une personne. L’indicateur est lu dans le navigateur
+et n’est jamais envoyé. Si vos propres tests de bout en bout vérifient les événements que votre
+site envoie, comptez-les quand même :
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", countAutomatedBrowsers: true });
+```
+
+Sur la balise script, c’est `data-count-automated="true"`.
+
 Documentation complète : <https://analyticstrend.com/docs/fr/>

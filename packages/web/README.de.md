@@ -66,4 +66,18 @@ So schalten Sie alles ab:
 const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ```
 
+## Automatisierte Browser
+
+Ein Browser, der per Automatisierung gesteuert wird, etwa mit Puppeteer, Playwright oder
+Selenium, sendet nichts und speichert nichts: Dort ist `navigator.webdriver` true, und ein
+solcher Browser ist weit öfter ein Crawler als ein Mensch. Das Kennzeichen wird im Browser gelesen
+und nie gesendet. Wenn Ihre eigenen End-to-End-Tests die Ereignisse prüfen, die Ihre Website
+sendet, zählen Sie sie trotzdem:
+
+```js
+const analytics = init({ writeKey: "wk_your_key_here", countAutomatedBrowsers: true });
+```
+
+Am Script-Tag ist das `data-count-automated="true"`.
+
 Vollständige Dokumentation: <https://analyticstrend.com/docs/de/>

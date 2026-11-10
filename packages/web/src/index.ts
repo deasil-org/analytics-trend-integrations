@@ -210,14 +210,25 @@ function globalPrivacyControl(): boolean {
   );
 }
 
+// True in a browser driven by Puppeteer, Playwright or Selenium, which set it
+// by default. Read here and never sent: it only decides whether to start. A
+// crawler running real Chrome sends an ordinary User-Agent, so this is the one
+// place it shows; one that hides the flag is not caught, and no further probe
+// is made for it, because probing the browser is how fingerprinting starts.
+function automatedBrowser(): boolean {
+  return (globalThis as { navigator?: { webdriver?: unknown } }).navigator?.webdriver === true;
+}
+
 export type WebClient = ReturnType<typeof createClient> & {
-  // False when the browser sent Global Privacy Control and it is respected:
-  // nothing is being counted. A site can use it to adjust its own notice.
+  // False when nothing is being counted: the browser sent Global Privacy
+  // Control and it is respected, or the browser is automated. A site can use
+  // it to adjust its own notice.
   enabled: boolean;
 };
 
-// What init returns for a browser that asked not to be tracked: the same
-// shape, doing nothing. No identifier, no listeners, no startup flush.
+// What init returns for a browser that asked not to be tracked, or is not
+// counted: the same shape, doing nothing. No identifier, no listeners, no
+// startup flush.
 function inertClient(): WebClient {
   return { enabled: false, track: async () => {}, flush: async () => {} };
 }
@@ -272,6 +283,11 @@ export function init(options: {
   contactLinks?: boolean;
   // A form submitted, by its id or name attribute, never what was typed.
   formSubmissions?: boolean;
+  // Off by default: a browser driven by automation (navigator.webdriver) is
+  // a crawler far more often than a person, and counting one fills every
+  // report with one-page visits from nowhere. On for a site whose own
+  // end-to-end tests check the events they send.
+  countAutomatedBrowsers?: boolean;
 }): WebClient {
   // Read once per page load: a changed setting reaches a site on its next
   // load anyway. Checked before anything else, so the inert path never
@@ -280,6 +296,7 @@ export function init(options: {
     if (options.clearDataOnGlobalPrivacyControl) clearStoredData(options.writeKey);
     return inertClient();
   }
+  if (!options.countAutomatedBrowsers && automatedBrowser()) return inertClient();
 
   const endpoint = options.endpoint ?? DEFAULT_ENDPOINT;
   // Resolved once and shared by both call sites below, so a page where the

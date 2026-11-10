@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- **Automated browsers are no longer counted by default.** When `navigator.webdriver` is true, as it is in a browser driven by Puppeteer, Playwright or Selenium, `init` returns a client that sends nothing, stores nothing and listens for nothing, as it does for Global Privacy Control, and `enabled` is `false`. Such a browser is a crawler far more often than a person: one running real Chrome sends an ordinary User-Agent, so the collector's bot check cannot see it, and each of its visits is a one-page visit from nowhere. The flag is read in the browser and never sent. `init({ countAutomatedBrowsers: true })`, or `data-count-automated="true"` on the script tag, counts them anyway, for a site whose own end-to-end tests check its events.
+
 ## 0.7.1
 
 - **The README in French, Spanish, Portuguese and German.** `README.fr.md`, `README.es.md`, `README.pt-BR.md` and `README.de.md` ship beside `README.md`, each README starts with a line linking to the others, and the package lists translated keywords for npm search. No change to what the package does.

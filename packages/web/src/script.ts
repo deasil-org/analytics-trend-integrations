@@ -32,11 +32,11 @@ declare global {
     // The client, for a page to track its own events with:
     // window.analyticstrend.track("signup").
     analyticstrend?: WebClient;
-    analyticstrendConfig?: ScriptConfig;
+    analyticsTrendConfig?: ScriptConfig;
     // Events pushed before the script loaded are sent when it starts; a push
     // after that is sent at once. It stays an array, because Tag Manager's
     // createQueue pushes onto an array that is already there.
-    analyticstrendQueue?: QueuedEvent[];
+    analyticsTrendQueue?: QueuedEvent[];
     // The write key the page's client started with. Two copies of the script
     // (a tag by hand and a plugin's) share no module state, only the window.
     analyticstrendStartedKey?: string;
@@ -47,7 +47,7 @@ type Start = (options: Parameters<typeof init>[0]) => WebClient;
 
 /**
  * The script-tag install. Everything comes from the tag's own data
- * attributes, or from window.analyticstrendConfig, so a site without a build
+ * attributes, or from window.analyticsTrendConfig, so a site without a build
  * step writes one tag and nothing else. Returns the client, or undefined when
  * there is nothing to start.
  */
@@ -60,7 +60,7 @@ export function startFromScript(
   // finished parsing, as an injected one is. Without a config either, there
   // is nothing to read, and throwing on someone's page would be worse than
   // doing nothing.
-  const config = win.analyticstrendConfig;
+  const config = win.analyticsTrendConfig;
   if (!script && !config) return undefined;
 
   const data: ScriptConfig = { ...config, ...(script as HTMLElement | null)?.dataset };
@@ -103,7 +103,7 @@ export function startFromScript(
 
 /** Sends what was queued, once each, and sends every later push at once. */
 function drainQueue(win: Window, client: WebClient): void {
-  const queue: QueuedEvent[] = Array.isArray(win.analyticstrendQueue) ? win.analyticstrendQueue : [];
+  const queue: QueuedEvent[] = Array.isArray(win.analyticsTrendQueue) ? win.analyticsTrendQueue : [];
   const send = (item: unknown) => {
     if (Array.isArray(item) && typeof item[0] === "string") {
       void client.track(item[0], item[1] as Record<string, unknown> | undefined);
@@ -114,7 +114,7 @@ function drainQueue(win: Window, client: WebClient): void {
     items.forEach(send);
     return queue.length;
   };
-  win.analyticstrendQueue = queue;
+  win.analyticsTrendQueue = queue;
   waiting.forEach(send);
 }
 

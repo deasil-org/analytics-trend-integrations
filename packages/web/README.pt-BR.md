@@ -69,19 +69,19 @@ const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ## A tag script, sem atributos
 
 A partir da 0.8.0, a tag script (`dist/script.js`) também lê suas opções de
-`window.analyticstrendConfig`, para uma instalação que não consegue pôr atributos na tag, como o
+`window.analyticsTrendConfig`, para uma instalação que não consegue pôr atributos na tag, como o
 Google Tag Manager. As chaves são os atributos da tag em camelCase, com os mesmos valores em texto,
 e um atributo na tag prevalece sobre a mesma chave aqui.
 
 ```html
 <script>
-  window.analyticstrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
-  window.analyticstrendQueue = window.analyticstrendQueue || [];
-  window.analyticstrendQueue.push(["signup", { plan: "pro" }]);
+  window.analyticsTrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
+  window.analyticsTrendQueue = window.analyticsTrendQueue || [];
+  window.analyticsTrendQueue.push(["signup", { plan: "pro" }]);
 </script>
 ```
 
-Os eventos adicionados a `window.analyticstrendQueue` antes de o script carregar são enviados
+Os eventos adicionados a `window.analyticsTrendQueue` antes de o script carregar são enviados
 assim que ele inicia, e um adicionado depois disso é enviado na hora. Uma segunda cópia do script
 com a mesma chave de escrita não inicia nada, então uma página com a tag duas vezes não é contada
 duas vezes.

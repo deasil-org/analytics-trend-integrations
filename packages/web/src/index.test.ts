@@ -1000,3 +1000,59 @@ describe("init and Global Privacy Control", () => {
     expect(init({ writeKey: WRITE_KEY }).enabled).toBe(true);
   });
 });
+
+// navigator.webdriver is true in a browser driven by Puppeteer, Playwright or
+// Selenium. A crawler running real Chrome sends an ordinary User-Agent, so the
+// collector's bot check never sees it; this is the one place it shows.
+describe("init and automated browsers", () => {
+  function stubPage(storage: Storage, navigatorValue: object | undefined) {
+    const listeners = new Map<string, () => void>();
+    vi.stubGlobal("location", { href: "https://shop.example/", origin: "https://shop.example" });
+    vi.stubGlobal("document", { visibilityState: "hidden", referrer: "" });
+    vi.stubGlobal("localStorage", storage);
+    vi.stubGlobal("navigator", navigatorValue);
+    vi.stubGlobal("addEventListener", (type: string, listener: () => void) => {
+      listeners.set(type, listener);
+    });
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200 });
+    vi.stubGlobal("fetch", fetchMock);
+    return { listeners, fetchMock };
+  }
+
+  it("sends nothing, stores nothing and listens for nothing in an automated browser", async () => {
+    const storage = fakeStorage();
+    const { listeners, fetchMock } = stubPage(storage, { webdriver: true });
+
+    const client = init({ writeKey: WRITE_KEY, pageViews: "history" });
+    await client.track("page_view");
+    await client.flush();
+    await settle();
+
+    expect(client.enabled).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(storage.length).toBe(0);
+    expect(listeners.size).toBe(0);
+  });
+
+  it("counts an automated browser when told to, for a site whose own tests check its events", async () => {
+    const { fetchMock } = stubPage(fakeStorage(), { webdriver: true });
+
+    const client = init({ writeKey: WRITE_KEY, countAutomatedBrowsers: true });
+    await client.track("page_view");
+    await client.flush();
+
+    expect(client.enabled).toBe(true);
+    expect(fetchMock).toHaveBeenCalled();
+  });
+
+  it("counts a browser that is not automated, or says nothing about it", () => {
+    stubPage(fakeStorage(), { webdriver: false });
+    expect(init({ writeKey: WRITE_KEY }).enabled).toBe(true);
+
+    stubPage(fakeStorage(), {});
+    expect(init({ writeKey: WRITE_KEY }).enabled).toBe(true);
+
+    stubPage(fakeStorage(), undefined);
+    expect(init({ writeKey: WRITE_KEY }).enabled).toBe(true);
+  });
+});

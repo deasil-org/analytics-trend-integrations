@@ -145,9 +145,9 @@ describe("startFromScript", () => {
 
   // The GTM template can't set data attributes on the tag it injects, so it
   // sets a page global first. Anyone else may do the same.
-  it("takes its options from analyticstrendConfig when the tag has none", () => {
+  it("takes its options from analyticsTrendConfig when the tag has none", () => {
     const { start } = fakeStart();
-    const win = { analyticstrendConfig: { writeKey: "wk_1", outboundLinks: "true" } } as unknown as Window;
+    const win = { analyticsTrendConfig: { writeKey: "wk_1", outboundLinks: "true" } } as unknown as Window;
     startFromScript(tag({}), win, start);
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_1", pageViews: "history", outboundLinks: true });
   });
@@ -155,21 +155,21 @@ describe("startFromScript", () => {
   // Typed rather than cast, so a key the type does not list fails to compile.
   it("counts automated browsers from the config's countAutomated", () => {
     const { start } = fakeStart();
-    const analyticstrendConfig: ScriptConfig = { writeKey: "wk_1", countAutomated: "true" };
-    startFromScript(tag({}), { analyticstrendConfig } as Window, start);
+    const analyticsTrendConfig: ScriptConfig = { writeKey: "wk_1", countAutomated: "true" };
+    startFromScript(tag({}), { analyticsTrendConfig } as Window, start);
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_1", pageViews: "history", countAutomatedBrowsers: true });
   });
 
   it("lets the tag's attributes win over the config, key by key", () => {
     const { start } = fakeStart();
-    const win = { analyticstrendConfig: { writeKey: "wk_1", fileDownloads: "true" } } as unknown as Window;
+    const win = { analyticsTrendConfig: { writeKey: "wk_1", fileDownloads: "true" } } as unknown as Window;
     startFromScript(tag({ writeKey: "wk_2" }), win, start);
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_2", pageViews: "history", fileDownloads: true });
   });
 
   it("starts from the config when there is no current script", () => {
     const { start, client } = fakeStart();
-    const win = { analyticstrendConfig: { writeKey: "wk_1" } } as unknown as Window;
+    const win = { analyticsTrendConfig: { writeKey: "wk_1" } } as unknown as Window;
     expect(startFromScript(null, win, start)).toBe(client);
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_1", pageViews: "history" });
 
@@ -180,7 +180,7 @@ describe("startFromScript", () => {
   it("sends what was queued before it loaded, once each", () => {
     const { start, track } = fakeStart();
     const win = {
-      analyticstrendQueue: [["signup", { plan: "pro" }], ["download"]],
+      analyticsTrendQueue: [["signup", { plan: "pro" }], ["download"]],
     } as unknown as Window;
     startFromScript(tag({ writeKey: "wk_1" }), win, start);
     expect(track.mock.calls).toEqual([
@@ -191,18 +191,18 @@ describe("startFromScript", () => {
 
   it("sends a push after start at once, and keeps the queue an array", () => {
     const { start, track } = fakeStart();
-    const win = { analyticstrendQueue: [] } as unknown as Window;
+    const win = { analyticsTrendQueue: [] } as unknown as Window;
     startFromScript(tag({ writeKey: "wk_1" }), win, start);
-    win.analyticstrendQueue!.push(["later"]);
+    win.analyticsTrendQueue!.push(["later"]);
     expect(track).toHaveBeenCalledExactlyOnceWith("later", undefined);
-    expect(Array.isArray(win.analyticstrendQueue)).toBe(true);
+    expect(Array.isArray(win.analyticsTrendQueue)).toBe(true);
   });
 
   it("creates the queue when none was there, so a later push is sent", () => {
     const { start, track } = fakeStart();
     const win = {} as Window;
     startFromScript(tag({ writeKey: "wk_1" }), win, start);
-    win.analyticstrendQueue!.push(["later", { a: 1 }]);
+    win.analyticsTrendQueue!.push(["later", { a: 1 }]);
     expect(track).toHaveBeenCalledExactlyOnceWith("later", { a: 1 });
   });
 
@@ -214,7 +214,7 @@ describe("startFromScript", () => {
     startFromScript(tag({ writeKey: "wk_1" }), win, first.start);
 
     const second = fakeStart();
-    win.analyticstrendConfig = { writeKey: "wk_1" };
+    win.analyticsTrendConfig = { writeKey: "wk_1" };
     expect(startFromScript(tag({}), win, second.start)).toBe(first.client);
     expect(second.start).not.toHaveBeenCalled();
     expect(win.analyticstrend).toBe(first.client);
@@ -222,7 +222,7 @@ describe("startFromScript", () => {
 
   it("does not send a queued event twice when a second copy loads", () => {
     const first = fakeStart();
-    const win = { analyticstrendQueue: [["signup"]] } as unknown as Window;
+    const win = { analyticsTrendQueue: [["signup"]] } as unknown as Window;
     startFromScript(tag({ writeKey: "wk_1" }), win, first.start);
     const second = fakeStart();
     startFromScript(tag({ writeKey: "wk_1" }), win, second.start);

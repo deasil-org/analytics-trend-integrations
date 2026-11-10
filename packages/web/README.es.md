@@ -70,19 +70,19 @@ const analytics = init({ writeKey: "wk_your_key_here", autoCapture: false });
 ## La etiqueta script, sin atributos
 
 Desde la 0.8.0, la etiqueta script (`dist/script.js`) también lee sus opciones de
-`window.analyticstrendConfig`, para una instalación que no puede poner atributos en la etiqueta,
+`window.analyticsTrendConfig`, para una instalación que no puede poner atributos en la etiqueta,
 como Google Tag Manager. Las claves son los atributos de la etiqueta en camelCase, con los mismos
 valores de texto, y un atributo en la etiqueta prevalece sobre la misma clave aquí.
 
 ```html
 <script>
-  window.analyticstrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
-  window.analyticstrendQueue = window.analyticstrendQueue || [];
-  window.analyticstrendQueue.push(["signup", { plan: "pro" }]);
+  window.analyticsTrendConfig = { writeKey: "wk_your_key_here", outboundLinks: "true" };
+  window.analyticsTrendQueue = window.analyticsTrendQueue || [];
+  window.analyticsTrendQueue.push(["signup", { plan: "pro" }]);
 </script>
 ```
 
-Los eventos que se añaden a `window.analyticstrendQueue` antes de que cargue el script se envían
+Los eventos que se añaden a `window.analyticsTrendQueue` antes de que cargue el script se envían
 en cuanto arranca, y uno que se añade después se envía al momento. Una segunda copia del script con
 la misma clave de escritura no arranca nada, así que una página con la etiqueta dos veces no se
 cuenta dos veces.

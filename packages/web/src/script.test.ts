@@ -32,8 +32,17 @@ describe("startFromScript", () => {
 
     expect(start).toHaveBeenCalledWith({ writeKey: "wk_123", pageViews: "history" });
     expect(started).toBe(client);
-    expect(win.analyticstrend).toBe(client);
+    expect(win.analyticsTrend).toBe(client);
     expect(track).not.toHaveBeenCalled();
+  });
+
+  // 0.9.0 renamed the client from window.analyticstrend, with no alias.
+  it("exposes the client only as analyticsTrend, never the lowercase name", () => {
+    const { start } = fakeStart();
+    const win = {} as Window;
+    startFromScript(tag({ writeKey: "wk_123" }), win, start);
+    expect(Object.keys(win)).not.toContain("analyticstrend");
+    expect(Object.keys(win)).not.toContain("analyticstrendStartedKey");
   });
 
   it("counts one page view per load when asked to, as 0.4 did", () => {
@@ -131,7 +140,7 @@ describe("startFromScript", () => {
     expect(start).not.toHaveBeenCalled();
     expect(warn).toHaveBeenCalledOnce();
     expect(warn).toHaveBeenCalledWith("AnalyticsTrend: data-write-key is missing");
-    expect(win.analyticstrend).toBeUndefined();
+    expect(win.analyticsTrend).toBeUndefined();
   });
 
   // document.currentScript is null for a module script, or one run after the
@@ -217,7 +226,7 @@ describe("startFromScript", () => {
     win.analyticsTrendConfig = { writeKey: "wk_1" };
     expect(startFromScript(tag({}), win, second.start)).toBe(first.client);
     expect(second.start).not.toHaveBeenCalled();
-    expect(win.analyticstrend).toBe(first.client);
+    expect(win.analyticsTrend).toBe(first.client);
   });
 
   it("does not send a queued event twice when a second copy loads", () => {

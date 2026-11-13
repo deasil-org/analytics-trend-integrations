@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="AnalyticsTrend">
+  <!-- Three points rising and growing, with no line joining them. The rise is
+       the trend; the missing line is the product, because the points are never
+       joined into a person. Circles rather than bars because three circles stay
+       legible at 16px, where a bar chart's gaps close up into a solid block. -->
+  <rect width="32" height="32" rx="7" fill="#6a4cff"/>
+  <circle cx="8.5" cy="23" r="2.5" fill="#ffffff"/>
+  <circle cx="16" cy="17" r="3.4" fill="#ffffff"/>
+  <circle cx="24" cy="10.2" r="4.5" fill="#ffffff"/>
+</svg>

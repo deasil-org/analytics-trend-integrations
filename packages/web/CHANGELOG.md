@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+- **Breaking: the client is `window.analyticsTrend`.** The script tag exposes its client as `window.analyticsTrend`, camel case with the T capitalised, as `window.analyticsTrendConfig` and `window.analyticsTrendQueue` are. `window.analyticstrend` is no longer set, with no alias, so a page that calls `window.analyticstrend.track("signup")` must call `window.analyticsTrend.track("signup")` instead. A copy of 0.8.0 on the same page as 0.9.0 does not see it as a client with the same key, so keep one version on a page. Nothing changes for `init`, which returns the client as before.
+
 ## 0.8.0
 
 - **Automated browsers are no longer counted by default.** When `navigator.webdriver` is true, as it is in a browser driven by Puppeteer, Playwright or Selenium, `init` returns a client that sends nothing, stores nothing and listens for nothing, as it does for Global Privacy Control, and `enabled` is `false`. Such a browser is a crawler far more often than a person: one running real Chrome sends an ordinary User-Agent, so the collector's bot check cannot see it, and each of its visits is a one-page visit from nowhere. The flag is read in the browser and never sent. `init({ countAutomatedBrowsers: true })`, or `data-count-automated="true"` on the script tag, counts them anyway, for a site whose own end-to-end tests check its events.

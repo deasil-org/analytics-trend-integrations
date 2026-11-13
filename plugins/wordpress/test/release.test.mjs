@@ -67,3 +67,21 @@ test("syncs trunk and the version's tag into an svn checkout", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// The directory's icon, banners and screenshots live in the repository's
+// top-level assets/ folder, beside trunk, never inside the plugin.
+test("syncs the directory's icon, banners and screenshots into assets", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "analyticstrend-svn-"));
+  try {
+    const out = execFileSync(process.execPath, [path.join(ROOT, "scripts", "svn-sync.mjs"), dir], { cwd: ROOT, encoding: "utf8" });
+    for (const name of ["icon.svg", "icon-128x128.png", "icon-256x256.png", "banner-772x250.png", "banner-1544x500.png", "screenshot-1.png", "screenshot-2.png"]) {
+      assert.ok(existsSync(path.join(dir, "assets", name)), `assets/${name}`);
+    }
+    assert.match(out, /svn add --force trunk tags\/\S+ assets/);
+    const readme = readFileSync(path.join(ROOT, "analyticstrend", "readme.txt"), "utf8");
+    const captions = readme.split("== Screenshots ==")[1]?.split("\n== ")[0].match(/^\d+\. /gm) ?? [];
+    assert.equal(captions.length, 2, "one caption per screenshot");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

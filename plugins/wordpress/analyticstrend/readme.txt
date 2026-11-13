@@ -71,6 +71,11 @@ Yes. The script exposes window.analyticsTrend, so a theme or another plugin can 
 
 AnalyticsTrend sets no cookies. Whether your site needs a banner depends on everything else on it, and on the law where you and your visitors are.
 
+== Screenshots ==
+
+1. Settings → AnalyticsTrend: paste your write key. Logged-in administrators and editors are left out by default.
+2. A project's overview in AnalyticsTrend, from the demo: visitors, visits, events and how long visits last.
+
 == Changelog ==
 
 = 1.0.0 =

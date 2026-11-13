@@ -65,7 +65,7 @@ Remove the tag you added by hand. If both stay, a page is still counted once, bu
 
 = Can I send my own events? =
 
-Yes. The script exposes window.analyticstrend, so a theme or another plugin can call window.analyticstrend.track("signup"). See the install guide.
+Yes. The script exposes window.analyticsTrend, so a theme or another plugin can call window.analyticsTrend.track("signup"). See the install guide.
 
 = Does it need a cookie banner? =
 

@@ -30,8 +30,8 @@ export type QueuedEvent = [name: string, props?: Record<string, unknown>];
 declare global {
   interface Window {
     // The client, for a page to track its own events with:
-    // window.analyticstrend.track("signup").
-    analyticstrend?: WebClient;
+    // window.analyticsTrend.track("signup").
+    analyticsTrend?: WebClient;
     analyticsTrendConfig?: ScriptConfig;
     // Events pushed before the script loaded are sent when it starts; a push
     // after that is sent at once. It stays an array, because Tag Manager's
@@ -39,7 +39,7 @@ declare global {
     analyticsTrendQueue?: QueuedEvent[];
     // The write key the page's client started with. Two copies of the script
     // (a tag by hand and a plugin's) share no module state, only the window.
-    analyticstrendStartedKey?: string;
+    analyticsTrendStartedKey?: string;
   }
 }
 
@@ -73,7 +73,7 @@ export function startFromScript(
   }
 
   // A second copy with the same key would count every page twice.
-  if (win.analyticstrend && win.analyticstrendStartedKey === data.writeKey) return win.analyticstrend;
+  if (win.analyticsTrend && win.analyticsTrendStartedKey === data.writeKey) return win.analyticsTrend;
 
   // Every page by default, in-app navigation included: a site with only a
   // script tag has no other way to count it. "load" keeps 0.4's one page
@@ -94,8 +94,8 @@ export function startFromScript(
     ...(data.clearOnGpc === "true" ? { clearDataOnGlobalPrivacyControl: true } : {}),
     ...(data.countAutomated === "true" ? { countAutomatedBrowsers: true } : {}),
   });
-  win.analyticstrend = client;
-  win.analyticstrendStartedKey = data.writeKey;
+  win.analyticsTrend = client;
+  win.analyticsTrendStartedKey = data.writeKey;
   if (pageViews === "load") void client.track("page_view");
   drainQueue(win, client);
   return client;

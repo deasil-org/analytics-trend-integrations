@@ -43,6 +43,15 @@ test("zips a plugin WordPress.org accepts", () => {
   assert.ok(short.length <= 150, `short description is ${short.length} characters`);
 });
 
+// WordPress.org refuses a submission whose Plugin URI and Author URI are the
+// same: one is a page about this plugin, the other about its author.
+test("the plugin and author URIs are different pages", () => {
+  const pluginUri = header.match(/^ \* Plugin URI:\s+(\S+)/m)?.[1];
+  const authorUri = header.match(/^ \* Author URI:\s+(\S+)/m)?.[1];
+  assert.equal(pluginUri, "https://analyticstrend.com/docs/guide/install-wordpress");
+  assert.notEqual(pluginUri, authorUri);
+});
+
 test("the readme says what is sent and where, and claims no compliance", () => {
   const readme = readFileSync(path.join(ROOT, "analyticstrend", "readme.txt"), "utf8");
   assert.match(readme, /== External services ==/);

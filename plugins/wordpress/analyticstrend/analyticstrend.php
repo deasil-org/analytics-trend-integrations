@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       AnalyticsTrend
- * Plugin URI:        https://analyticstrend.com
+ * Plugin URI:        https://analyticstrend.com/docs/guide/install-wordpress
  * Description:       Product analytics for your site, with no cookies and no personal data. Paste your write key and every page is counted.
  * Version:           1.0.0
  * Requires at least: 6.5

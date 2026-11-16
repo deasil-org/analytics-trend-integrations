@@ -12,7 +12,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 24.22.3
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
@@ -32,7 +32,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 24.22.3
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:packages
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 24.22.3
           # This job installs with npm, as someone copying the template would.
           # Without this, setup-node reads the repository's packageManager
           # field and looks for a pnpm that is not installed here.

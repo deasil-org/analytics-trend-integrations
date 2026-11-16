@@ -15,6 +15,12 @@
     "release": "pnpm -r --filter \"./packages/*\" publish --access public",
     "mock-collector": "node scripts/mock-collector.mjs",
     "check:app-examples": "node scripts/check-app-examples.mjs",
-    "i18n:lock": "node scripts/i18n-lock.mjs"
+    "i18n:lock": "node scripts/i18n-lock.mjs",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "node scripts/no-prettier.mjs"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.78.0"
   }
 }

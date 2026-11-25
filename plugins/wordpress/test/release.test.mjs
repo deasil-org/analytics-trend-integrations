@@ -61,6 +61,17 @@ test("the readme says what is sent and where, and claims no compliance", () => {
   assert.doesNotMatch(readme, /compliant|compliance/i);
 });
 
+// The directory asks for public access to the source of the bundled, minified
+// script and to the tools that build it (guidelines 1 and 4), and lists as
+// contributors only WordPress.org usernames: the plugin's owner is
+// "analyticstrend".
+test("the readme links the bundled script's source and names the owner as contributor", () => {
+  const readme = readFileSync(path.join(ROOT, "analyticstrend", "readme.txt"), "utf8");
+  assert.equal(readme.match(/^Contributors:\s*(.+)$/m)?.[1].trim(), "analyticstrend");
+  assert.ok(readme.includes("https://github.com/deasil-org/analytics-trend-integrations/tree/main/packages/web"));
+  assert.ok(readme.includes("https://github.com/deasil-org/analytics-trend-integrations/tree/main/plugins/wordpress"));
+});
+
 test("syncs trunk and the version's tag into an svn checkout", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "analyticstrend-svn-"));
   try {

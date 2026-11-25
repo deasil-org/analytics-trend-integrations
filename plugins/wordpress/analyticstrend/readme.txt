@@ -1,5 +1,5 @@
 === AnalyticsTrend ===
-Contributors: deasil
+Contributors: analyticstrend
 Tags: analytics, statistics, privacy, cookieless, stats
 Requires at least: 6.5
 Tested up to: 7.1
@@ -25,6 +25,12 @@ This plugin adds the AnalyticsTrend script to every public page of your site. Yo
 You need an AnalyticsTrend project for a website. Its write key is on the project's setup page.
 
 Install guide: [https://analyticstrend.com/docs/guide/install-wordpress](https://analyticstrend.com/docs/guide/install-wordpress)
+
+== Source code ==
+
+The script in `assets/script.js` is the minified build of the AnalyticsTrend web SDK, `@analyticstrend/web`, released under the MIT license. Its source, and the build that produces the file (`pnpm --filter @analyticstrend/web build`), are at [https://github.com/deasil-org/analytics-trend-integrations/tree/main/packages/web](https://github.com/deasil-org/analytics-trend-integrations/tree/main/packages/web).
+
+The plugin's own source, and the scripts that copy the built file into it, build its translations and package it, are at [https://github.com/deasil-org/analytics-trend-integrations/tree/main/plugins/wordpress](https://github.com/deasil-org/analytics-trend-integrations/tree/main/plugins/wordpress).
 
 == External services ==
 
